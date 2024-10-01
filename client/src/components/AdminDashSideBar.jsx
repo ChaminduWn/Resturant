@@ -150,6 +150,17 @@ export default function AdminDashSideBar() {
               </div>
               </Link>
 
+              <Link to="/admin-dashboard?tab=update-foods">
+              <div
+                className={`p-2.5 my-2 mx-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-[#707070] text-white ${
+                  activeTab === "update-foods" ? "bg-[#707070]" : ""
+                }`}
+               >
+                <MdDashboard color="#D4D4D4" />
+                <span className="text-[15px] ml-4 text-[#D4D4D4]"> Update Foods</span>
+              </div>
+              </Link>
+
               <Link to="/admin-dashboard?tab=view-foods">
               <div
                 className={`p-2.5 my-2 mx-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-[#707070] text-white ${

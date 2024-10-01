@@ -19,9 +19,9 @@ router.post('/createFood',verifyToken, createFoodCategory);
 router.get('/getAllFoods',verifyToken, getFoodCategories);
 
 // Route to delete a specific food category by ID
-router.delete('/deleteFoods:categoryId',verifyToken, deleteFoodCategory);
+router.delete('/deleteFoods/:categoryId',verifyToken, deleteFoodCategory);
 
 // Route to update a specific food category by ID
-router.put('/updateFoods:categoryId',verifyToken, updateFoodCategory);
+router.put('/updateFoods/:categoryId',verifyToken, updateFoodCategory);
 
 export default router;

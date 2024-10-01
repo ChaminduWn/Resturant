@@ -15,6 +15,7 @@ import AdminPrivateRoute from "./components/AdminPrivateRoutes.jsx";
 import AdminViewEmployeeDetails from "./components/AdminViewEmployeeDetails.jsx";
 import FoodCategoryForm from './components/FoodCategoryForm.jsx';
 import FoodCategoryList from './components/FoodCategoryList.jsx';
+import FoodCategoryUpdate from './components/FoodCategoryUpdate.jsx'
 
 
 
@@ -44,6 +45,8 @@ export default function App() {
 
          <Route element={<AdminPrivateRoute />}>
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          {/* <Route path="/categories/update/:id" element={<FoodCategoryUpdate />} /> */}
+
 
         
 
@@ -56,9 +59,11 @@ export default function App() {
         </Route>
 
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        {/* <Route path="/updateFoods/:id" element={<FoodCategoryUpdate />} /> */}
 
-       < Route path="/add-food" element={<FoodCategoryForm />} />
-       < Route path="/view-food" element={<FoodCategoryList />} />
+
+
+ 
 
 
 

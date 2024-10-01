@@ -1,7 +1,7 @@
-import Employee from "../models/employee.model.js";
+import Employee from "../models/employee.model.js"
 import bcryptjs from "bcryptjs";
-import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
+import { errorHandler } from "../utils/error.js";
 export const create = async (req, res, next) => {
   const { firstname, lastname, address , email, nic, phone, role, shift} = req.body;
 
@@ -66,7 +66,7 @@ export const create = async (req, res, next) => {
     username: nameToUsername,
     password: hashedPassword,
     role,
-    shift,	
+    
   });
   try {
     await newEmployee.save();

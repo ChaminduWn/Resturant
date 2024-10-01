@@ -2,46 +2,33 @@ import mongoose from "mongoose";
 
 const foodCategorySchema = new mongoose.Schema(
     {
-        foodName:{
+        foodName: {
             type: String,
             required: true,
         },
 
-        
-        description:{
+        description: {
             type: String,
             required: true,
         },
 
-        category:{
+        category: {
             type: String,
             required: true,
+            enum: ['Breakfast', 'Lunch', 'Dinner', 'Shorties','Drinks', 'Desserts'], // Define the valid categories
         },
 
-        price:{
-                type: Number,
-                required: true,
-        },
-
-        sellingPrice:{
+        price: {
             type: Number,
             required: true,
         },
 
-        
-        imageUrls:{
-            type: Array,
-            required: true,
+        image: {
+            type: String, // Assuming you store the image URL
+            default: 'https://i.pinimg.com/originals/2b/f0/e0/2bf0e06f26135c159a64591c817f639e.jpg',
         },
-        userRef:{
-            type: String,
-            required: true,
-        },
-    }, {timestamps: true
-}
+    }
 );
-
-
 
 const FoodCategory = mongoose.model('FoodCategory', foodCategorySchema);
 

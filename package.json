@@ -12,8 +12,22 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.7",
+    "autoprefixer": "^10.4.20",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "mongoose": "^8.7.0"
+    "firebase": "^10.13.2",
+    "html2canvas": "^1.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.3",
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.7.0",
+    "postcss": "^8.4.47",
+    "postcss-cli": "^11.0.0",
+    "react-circular-progressbar": "^2.1.0",
+    "redux-persist": "^6.0.0"
   }
 }

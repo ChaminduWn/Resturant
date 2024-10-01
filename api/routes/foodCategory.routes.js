@@ -1,16 +1,27 @@
-import express from "express";
 
+import express from 'express';
+import {
+  createFoodCategory,
+  getFoodCategories,
+  deleteFoodCategory,
+  updateFoodCategory,
+} from '../controllers/FoodCategory.controller.js';
 
 import { verifyToken } from "../utils/verifyUser.js";
-import { createFood, deleteFoods, getAllFoods, updateFoods } from "../controllers/foodCategory.controller.js";
+
 
 const router = express.Router();
 
-router.post("/createFood", verifyToken, createFood);
-router.get("/getAllFoods", getAllFoods);
-router.delete("/deleteFoods/:foodId", deleteFoods);
-router.put("/updateFoods/:foodId", verifyToken, updateFoods);
-// router.get('/getAllSupplements', getAllSupplements);
+// Route to create a new food category
+router.post('/createFood',verifyToken, createFoodCategory);
 
-router.post("/create", verifyToken, createSupplements);
+// Route to get all food categories or filter by category
+router.get('/getAllFoods',verifyToken, getFoodCategories);
+
+// Route to delete a specific food category by ID
+router.delete('/deleteFoods:categoryId',verifyToken, deleteFoodCategory);
+
+// Route to update a specific food category by ID
+router.put('/updateFoods:categoryId',verifyToken, updateFoodCategory);
+
 export default router;

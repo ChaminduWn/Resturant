@@ -3,9 +3,16 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv'
 
 import userRoutes from './routes/user.routes.js'
+import authRoutes from './routes/auth.routes.js'
 import foodRoutes from './routes/foodCategory.routes.js'
+import authEmployeeRoutes from './routes/authEmployee.routes.js'
+import cookieParser from 'cookie-parser';
 
-dotenv.config();
+import employeeRoutes from "./routes/employee.routes.js";
+
+
+dotenv.config();   
+
 
 
 
@@ -20,12 +27,18 @@ mongoose
 
 const app = express();
 
+app.use(express.json());
+app.use(cookieParser());
+
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000!!');
   });
 
   app.use('/api/user', userRoutes);
   app.use('/api/auth', authRoutes);
+
+  app.use("/api/employee", employeeRoutes);
   app.use('/api/authEmployee',authEmployeeRoutes)
 
   app.use("/api/foods", foodRoutes);

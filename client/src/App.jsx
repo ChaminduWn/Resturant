@@ -13,9 +13,6 @@ import EmployeeLogin from "./pages/EmployeeLogin.jsx";
 import AdminDashboard from "./pages/AdminDashborad.jsx";
 import AdminPrivateRoute from "./components/AdminPrivateRoutes.jsx";
 import AdminViewEmployeeDetails from "./components/AdminViewEmployeeDetails.jsx";
-import FoodCategoryForm from './components/FoodCategoryForm.jsx';
-import FoodCategoryList from './components/FoodCategoryList.jsx';
-import FoodCategoryUpdate from './components/FoodCategoryUpdate.jsx'
 
 
 
@@ -35,6 +32,7 @@ export default function App() {
 
         <Route path="/shop" element={<Shop />} />
 
+
         <Route element={<PrivateRoute />} >
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path="/member-view/:userId" element={<MemberView />} />
@@ -45,7 +43,6 @@ export default function App() {
 
          <Route element={<AdminPrivateRoute />}>
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          {/* <Route path="/categories/update/:id" element={<FoodCategoryUpdate />} /> */}
 
 
         

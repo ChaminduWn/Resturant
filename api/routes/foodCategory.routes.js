@@ -24,4 +24,6 @@ router.delete('/deleteFoods/:categoryId',verifyToken, deleteFoodCategory);
 // Route to update a specific food category by ID
 router.put('/updateFoods/:categoryId',verifyToken, updateFoodCategory);
 
+
+
 export default router;

@@ -49,6 +49,8 @@ export const getFoodCategories = async (req, res, next) => {
   }
 };
 
+
+
 // Delete a food category by ID
 export const deleteFoodCategory = async (req, res, next) => {
   try {

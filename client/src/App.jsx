@@ -5,7 +5,7 @@ import About from './pages/About.jsx'
 import DashBoard from './pages/DashBoard.jsx'
 import SignIn from './pages/SignIn.jsx'
 import Header from './components/Header.jsx'
-import Shop from './pages/Shop.jsx'
+import Item from './pages/Item.jsx'
 import Dashboard from './pages/DashBoard.jsx'
 import MemberView from './pages/MemberView.jsx'
 import PrivateRoute from './components/PrivateRoute.jsx'
@@ -13,6 +13,8 @@ import EmployeeLogin from "./pages/EmployeeLogin.jsx";
 import AdminDashboard from "./pages/AdminDashborad.jsx";
 import AdminPrivateRoute from "./components/AdminPrivateRoutes.jsx";
 import AdminViewEmployeeDetails from "./components/AdminViewEmployeeDetails.jsx";
+import CartPage from './pages/CartPage.jsx'
+import PaymentPage from './pages/PaymentPage.jsx'
 
 
 
@@ -30,7 +32,11 @@ export default function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/employee-login" element={<EmployeeLogin />} />
 
-        <Route path="/shop" element={<Shop />} />
+        <Route path="/item" element={<Item />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
+
+
 
 
         <Route element={<PrivateRoute />} >

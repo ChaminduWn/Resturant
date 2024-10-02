@@ -1,4 +1,4 @@
-import FoodCategory from '../models/FoodCategory.model.js';
+import FoodCategory from '../models/foodCategory.model.js';
 import { errorHandler } from '../utils/error.js';
 
 // Create a new food category

@@ -5,10 +5,13 @@ import dotenv from 'dotenv'
 import userRoutes from './routes/user.routes.js'
 import authRoutes from './routes/auth.routes.js'
 import foodRoutes from './routes/foodCategory.routes.js'
+import cartRoutes from './routes/cart.routes.js'
 import authEmployeeRoutes from './routes/authEmployee.routes.js'
 import cookieParser from 'cookie-parser';
 
 import employeeRoutes from "./routes/employee.routes.js";
+import paymentRoutes from "./routes/payment.routes.js";
+
 
 
 dotenv.config();   
@@ -42,6 +45,9 @@ app.listen(3000, () => {
   app.use('/api/authEmployee',authEmployeeRoutes)
 
   app.use("/api/foods", foodRoutes);
+  app.use('/api/cart', cartRoutes);
+  app.use('/api/payment', paymentRoutes);
+
 
 
 

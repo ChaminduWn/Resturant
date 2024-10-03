@@ -30,6 +30,6 @@ const foodCategorySchema = new mongoose.Schema(
     }
 );
 
-const FoodCategory = mongoose.model('FoodCategory', foodCategorySchema);
+const FoodItem = mongoose.model('FoodItem', foodCategorySchema);
 
-export default FoodCategory;
+export default FoodItem;

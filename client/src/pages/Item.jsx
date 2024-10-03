@@ -1,132 +1,148 @@
-import { Button } from 'flowbite-react';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function FoodCategoryList() {
-  const [foodCategories, setFoodCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default function Item() {
+  const [foodItems, setFoodCategories] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [formData, setFormData] = useState({
+    foodName: "",
+    description: "",
+    category: "Breakfast",
+    price: "",
+    image: "",
+  });
+
   const navigate = useNavigate();
 
+  // Fetch all food categories (or items)
   const fetchFoodCategories = async () => {
-    setIsLoading(true);
-    setError(null);
     try {
-      const response = await fetch('/api/foods/getAllFoods', {
+      const response = await fetch("/api/foods/getAllFoods", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-      if (!response.ok) {
-        throw new Error('Failed to fetch food categories');
-      }
       const data = await response.json();
-      setFoodCategories(data.foodCategories);
+      setFoodCategories(data.foodItems);
     } catch (error) {
-      console.error('Error fetching food categories:', error);
-      setError('Failed to load food categories. Please try again later.');
-    } finally {
-      setIsLoading(false);
+      console.error("Error fetching food categories:", error);
     }
   };
 
-  const addToCart = async (category) => {
+  // Add food item to the cart
+  const addToCart = async (item) => {
+    // Retrieve the user object from local storage and parse it
+    const userData = JSON.parse(localStorage.getItem("persist:root"));
+
+    // If userData is valid, parse the currentUser object from it
+    const user = userData && JSON.parse(userData.user)?.currentUser;
+
+    const userId = user?._id; // Retrieve the user ID
+
+    // Debugging: Print userId to check if it's retrieved correctly
+    console.log("User ID:", userId);
+
+    // If the user ID is not found, prompt the user to login
+    if (!userId || userId === "undefined") {
+      alert("User not logged in. Please login to add items to the cart.");
+      navigate("/login"); // Redirect to login if user ID is not found
+      return;
+    }
+
     try {
-      const response = await fetch('/api/cart/addToCart', {
-        method: 'POST',
+      const response = await fetch("/api/cart/addToCart", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
-          foodId: category._id,
+          foodId: item._id,
           quantity: 1,
-          foodName: category.foodName,
-          price: category.price,
-          image: category.image
-        })
+          userId: userId, // Use the correct userId here
+        }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Server response:', errorData);
-        throw new Error(errorData.message || `Failed to add to cart: ${response.status} ${response.statusText}`);
+      if (response.ok) {
+        alert("Food added to cart!");
+        navigate(`/cart?foodId=${item._id}&userId=${userId}&quantity=1`); // Navigate to the cart page with query params
+      } else {
+        alert("Failed to add food to cart");
       }
-
-      const data = await response.json();
-      console.log('Successfully added to cart:', data);
-
-      navigate('/cart', { 
-        state: { 
-          addedItem: {
-            id: category._id,
-            name: category.foodName,
-            price: category.price,
-            image: category.image,
-            quantity: 1
-          }
-        }
-      });
     } catch (error) {
-      console.error('Error adding to cart:', error);
-      setError(`Failed to add to cart: ${error.message}`);
+      console.error("Error adding to cart:", error);
     }
   };
 
+  // Handle image change
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.files[0]); // Save the selected image file
+  };
+
+  // Fetch food categories (items) on component load
   useEffect(() => {
     fetchFoodCategories();
   }, []);
 
-  if (isLoading) {
-    return <div className="text-center">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
-  }
-
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="max-w-[1080px] mx-auto">
-        {foodCategories.length === 0 ? (
-          <p className="text-center text-gray-700">No categories available</p>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {foodCategories.map((category) => (
-              <div key={category._id} className="relative flex flex-col text-gray-700 bg-white shadow-md rounded-xl">
-                <div className="relative h-48 mx-4 mt-4 overflow-hidden bg-white rounded-xl">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+        Food Categories
+      </h2>
+      {foodItems.length === 0 ? (
+        <p className="text-gray-600 dark:text-gray-400">No categories available</p>
+      ) : (
+        <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="px-16 py-3">
+                <span className="sr-only">Image</span>
+              </th>
+              <th scope="col" className="px-6 py-3">Food Name</th>
+              <th scope="col" className="px-6 py-3">Category</th>
+              <th scope="col" className="px-6 py-3">Description</th>
+              <th scope="col" className="px-6 py-3">Price</th>
+              <th scope="col" className="px-6 py-3">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {foodItems.map((item) => (
+              <tr
+                key={item._id}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+              >
+                <td className="p-4">
                   <img
-                    src={category.image}
-                    alt={category.foodName}
-                    className="object-cover w-full h-full"
+                    src={item.image}
+                    className="w-16 max-w-full max-h-full md:w-32"
+                    alt={item.foodName}
                   />
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="font-sans text-base font-medium text-blue-gray-900">
-                      {category.foodName}
-                    </p>
-                    <p className="font-sans text-base font-medium text-blue-gray-900">
-                      ${category.price}
-                    </p>
-                  </div>
-                  <p className="font-sans text-sm text-gray-700 opacity-75">
-                    {category.description}
-                  </p>
-                </div>
-                <div className="p-4 pt-0">
-                  <Button
-                    className="w-full px-6 py-3 font-sans text-xs font-bold text-center uppercase align-middle transition-all rounded-lg bg-blue-gray-900/10 text-blue-gray-900 hover:scale-105 focus:scale-105"
-                    onClick={() => addToCart(category)}
+                </td>
+                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                  {item.foodName}
+                </td>
+                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                  {item.category}
+                </td>
+                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                  {item.description}
+                </td>
+                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                  {`$${item.price}`}
+                </td>
+                <td className="px-6 py-4">
+                  <button
+                    onClick={() => addToCart(item)}
+                    className="px-3 py-2 ml-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700"
                   >
                     Add to Cart
-                  </Button>
-                </div>
-              </div>
+                  </button>
+                </td>
+              </tr>
             ))}
-          </div>
-        )}
-      </div>
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function FoodCategoryList() {
-  const [foodCategories, setFoodCategories] = useState([]);
+  const [foodItems, setFoodCategories] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null); // For the uploaded image file
   const [showDeleteDialog, setShowDeleteDialog] = useState(false); // State to show/hide delete dialog
-  const [categoryToDelete, setCategoryToDelete] = useState(null); // Store the selected category for deletion
-  const [categoryToEdit, setCategoryToEdit] = useState(null); // Store the selected category for editing
+  const [itemToDelete, setCategoryToDelete] = useState(null); // Store the selected category for deletion
+  const [itemToEdit, setCategoryToEdit] = useState(null); // Store the selected category for editing
   const [formData, setFormData] = useState({
     foodName: "",
     description: "",
@@ -25,7 +25,7 @@ export default function FoodCategoryList() {
         },
       });
       const data = await response.json();
-      setFoodCategories(data.foodCategories);
+      setFoodCategories(data.foodItems);
     } catch (error) {
       console.error("Error fetching food categories:", error);
     }
@@ -42,7 +42,7 @@ export default function FoodCategoryList() {
 
       if (response.ok) {
         setFoodCategories(
-          foodCategories.filter((category) => category._id !== id)
+          foodItems.filter((item) => item._id !== id)
         );
         alert("Food category deleted successfully");
         closeDeleteDialog();
@@ -54,14 +54,14 @@ export default function FoodCategoryList() {
     }
   };
 
-  const handleEdit = (category) => {
-    setCategoryToEdit(category); // Set the selected category for editing
+  const handleEdit = (item) => {
+    setCategoryToEdit(item); // Set the selected category for editing
     setFormData({
-      foodName: category.foodName,
-      description: category.description,
-      category: category.category,
-      price: category.price,
-      image: category.image,
+      foodName: item.foodName,
+      description: item.description,
+      category: item.category,
+      price: item.price,
+      image: item.image,
     });
   };
 
@@ -72,7 +72,7 @@ export default function FoodCategoryList() {
   const updateFoodCategory = async () => {
     try {
       const response = await fetch(
-        `/api/foods/updateFoods/${categoryToEdit._id}`,
+        `/api/foods/updateFoods/${itemToEdit._id}`,
         {
           method: "PUT",
           headers: {
@@ -84,14 +84,14 @@ export default function FoodCategoryList() {
       );
 
       if (response.ok) {
-        alert("Food category updated successfully");
+        alert("Food item updated successfully");
         setCategoryToEdit(null); // Reset edit state
-        fetchFoodCategories(); // Refresh food categories
+        fetchFoodCategories(); // Refresh food items
       } else {
-        alert("Failed to update food category");
+        alert("Failed to update food item");
       }
     } catch (error) {
-      console.error("Error updating food category:", error);
+      console.error("Error updating food item:", error);
     }
   };
 
@@ -99,8 +99,8 @@ export default function FoodCategoryList() {
     setSelectedImage(e.target.files[0]); // Save the selected image file
   };
 
-  const openDeleteDialog = (category) => {
-    setCategoryToDelete(category);
+  const openDeleteDialog = (item) => {
+    setCategoryToDelete(item);
     setShowDeleteDialog(true);
   };
 
@@ -118,7 +118,7 @@ export default function FoodCategoryList() {
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
         Food Categories
       </h2>
-      {foodCategories.length === 0 ? (
+      {foodItems.length === 0 ? (
         <p className="text-gray-600 dark:text-gray-400">
           No categories available
         </p>
@@ -147,39 +147,39 @@ export default function FoodCategoryList() {
             </tr>
           </thead>
           <tbody>
-            {foodCategories.map((category) => (
+            {foodItems.map((item) => (
               <tr
-                key={category._id}
+                key={item._id}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
               >
                 <td className="p-4">
                   <img
-                    src={category.image}
+                    src={item.image}
                     className="w-16 max-w-full max-h-full md:w-32"
-                    alt={category.foodName}
+                    alt={item.foodName}
                   />
                 </td>
                 <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                  {category.foodName}
+                  {item.foodName}
                 </td>
                 <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                  {category.category}
+                  {item.category}
                 </td>
                 <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                  {category.description}
+                  {item.description}
                 </td>
                 <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                  {`$${category.price}`}
+                  {`$${item.price}`}
                 </td>
                 <td className="px-6 py-4">
                   <button
-                    onClick={() => handleEdit(category)}
+                    onClick={() => handleEdit(item)}
                     className="px-3 py-2 text-sm font-medium text-blue-600 bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-700 dark:text-white"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => openDeleteDialog(category)}
+                    onClick={() => openDeleteDialog(item)}
                     className="px-3 py-2 ml-2 text-sm font-medium text-red-600 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-700 dark:text-white"
                   >
                     Remove
@@ -192,7 +192,7 @@ export default function FoodCategoryList() {
       )}
 
       {/* Render update form when a category is being edited */}
-      {categoryToEdit && (
+      {itemToEdit && (
         <div className="mt-6">
           <h3 className="text-xl font-semibold">Edit Food Category</h3>
           <form
@@ -280,10 +280,10 @@ export default function FoodCategoryList() {
         <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-75">
           <div className="p-6 bg-white rounded-lg">
             <h3 className="text-lg font-semibold">Confirm Delete</h3>
-            <p>Are you sure you want to delete {categoryToDelete.foodName}?</p>
+            <p>Are you sure you want to delete {itemToDelete.foodName}?</p>
             <div className="flex justify-end mt-4">
               <button
-                onClick={() => deleteFoodCategory(categoryToDelete._id)}
+                onClick={() => deleteFoodCategory(itemToDelete._id)}
                 className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
               >
                 Confirm

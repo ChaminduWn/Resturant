@@ -1,18 +1,22 @@
 
 import express from 'express';
 import {
-  createFoodCategory,
-  getFoodCategories,
-  deleteFoodCategory,
-  updateFoodCategory,
+ 
+  createFoodItem,
+  getFoodItem,
+  deleteFoodItem,
+  updateFoodItem,
+  findFoodById,
 } from '../controllers/foodCategory.controller.js';
 import { verifyToken } from "../utils/verifyUser.js";
 
 const router = express.Router();
 
-router.post('/createFood',verifyToken, createFoodCategory);
-router.get('/getAllFoods',verifyToken, getFoodCategories);
-router.delete('/deleteFoods/:categoryId',verifyToken, deleteFoodCategory);
-router.put('/updateFoods/:categoryId',verifyToken, updateFoodCategory);
+router.post('/createFood',verifyToken, createFoodItem);
+router.get('/getAllFoods',verifyToken, getFoodItem);
+router.delete('/deleteFoods/:itemId',verifyToken, deleteFoodItem);
+router.put('/updateFoods/:itemId',verifyToken, updateFoodItem);
+router.get('/:foodId', findFoodById);
+
 
 export default router;

@@ -92,7 +92,7 @@ export default function FoodCategoryForm() {
       });
 
       if (response.ok) {
-        alert("Food category created successfully");
+        alert("Food Item created successfully");
         setFormData({
           foodName: "",
           description: "",
@@ -103,10 +103,10 @@ export default function FoodCategoryForm() {
         setImageFile(null);
         setImageUploadProgress(null);
       } else {
-        alert("Failed to create food category");
+        alert("Failed to create food item");
       }
     } catch (error) {
-      console.error("Error creating food category:", error);
+      console.error("Error creating food item:", error);
     }
   };
 

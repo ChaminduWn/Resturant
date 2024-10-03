@@ -1,8 +1,24 @@
-import FoodCategory from '../models/foodCategory.model.js';
+import FoodItem from '../models/foodCategory.model.js';
 import { errorHandler } from '../utils/error.js';
 
+// Function to find food item by ID
+export const findFoodById = async (req, res, next) => {
+  try {
+    const { foodId } = req.params;
+    
+    const foodItem = await FoodItem.findById(foodId);
+    if (!foodItem) {
+      return res.status(404).json({ message: 'Food item not found' });
+    }
+
+    res.status(200).json(foodItem);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Create a new food category
-export const createFoodCategory = async (req, res, next) => {
+export const createFoodItem = async (req, res, next) => {
   try {
     if (!req.user.isAdmin) {
       return next(errorHandler(403, 'You are not allowed to create a food category'));
@@ -14,7 +30,7 @@ export const createFoodCategory = async (req, res, next) => {
       return next(new Error('Food name is required'));
     }
 
-    const newFoodCategory = new FoodCategory({
+    const newFoodItem = new FoodItem({
       foodName,
       description,
       category,
@@ -22,67 +38,46 @@ export const createFoodCategory = async (req, res, next) => {
       image
     });
 
-    const savedCategory = await newFoodCategory.save();
-    res.status(201).json(savedCategory);
+    const savedItem = await newFoodItem.save();
+    res.status(201).json(savedItem);
   } catch (error) {
     next(error);
   }
 };
 
-// Get all food categories or filter by category
-// export const getFoodCategories = async (req, res, next) => {
-//   try {
-//     const startIndex = parseInt(req.query.startIndex) || 0;
-//     const sortDirection = req.query.order === 'asc' ? 1 : -1;
-//     const category = req.query.category;
-
-//     const query = category ? { category } : {};
-
-//     const foodCategories = await FoodCategory.find(query)
-//       .sort({ updatedAt: sortDirection })
-//       .skip(startIndex)
-//       .exec();
-
-//     res.status(200).json({ foodCategories });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-export const getFoodCategories = async (req, res, next) => {
+// Get all food items
+export const getFoodItem = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const sortDirection = req.query.order === 'asc' ? 1 : -1;
-    const category = req.query.category;
+    const item = req.query.item;
 
-    const query = category ? { category } : {};
+    const query = item ? { item } : {};
 
-    const foodCategories = await FoodCategory.find(query)
+    const foodItems = await FoodItem.find(query)
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .exec();
 
-    if (!foodCategories || foodCategories.length === 0) {
+    if (!foodItems || foodItems.length === 0) {
       return res.status(404).json({ message: 'No food categories found' });
     }
 
-    res.status(200).json({ foodCategories });
+    res.status(200).json({ foodItems });
   } catch (error) {
     console.error('Error fetching food categories:', error); // Log the error
     res.status(500).json({ message: 'Internal server error', error });
   }
 };
 
-
-
 // Delete a food category by ID
-export const deleteFoodCategory = async (req, res, next) => {
+export const deleteFoodItem = async (req, res, next) => {
   try {
     if (!req.user.isAdmin) {
       return next(errorHandler(403, 'You are not allowed to delete this food category'));
     }
 
-    await FoodCategory.findByIdAndDelete(req.params.categoryId);
+    await FoodItem.findByIdAndDelete(req.params.itemId);
     res.status(200).json({ message: 'Food category deleted successfully' });
   } catch (error) {
     next(error);
@@ -90,7 +85,7 @@ export const deleteFoodCategory = async (req, res, next) => {
 };
 
 // Update a food category by ID
-export const updateFoodCategory = async (req, res, next) => {
+export const updateFoodItem = async (req, res, next) => {
   try {
     if (!req.user.isAdmin) {
       return next(errorHandler(403, 'You are not allowed to update this food category'));
@@ -98,8 +93,8 @@ export const updateFoodCategory = async (req, res, next) => {
 
     const { foodName, description, category, price, image } = req.body;
 
-    const updatedCategory = await FoodCategory.findByIdAndUpdate(
-      req.params.categoryId,
+    const updatedItem = await FoodItem.findByIdAndUpdate(
+      req.params.itemId,
       {
         $set: {
           foodName,
@@ -112,9 +107,8 @@ export const updateFoodCategory = async (req, res, next) => {
       { new: true }
     );
 
-    res.status(200).json(updatedCategory);
+    res.status(200).json(updatedItem);
   } catch (error) {
     next(error);
   }
 };
-

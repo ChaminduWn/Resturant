@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth.jsx';
-import gymImage from '../assets/signup.jpg';
+import gymImage from '../assets/emplogin.jpg';
 import {
   signInStart,
   signInSuccess,

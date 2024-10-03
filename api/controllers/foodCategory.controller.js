@@ -30,6 +30,25 @@ export const createFoodCategory = async (req, res, next) => {
 };
 
 // Get all food categories or filter by category
+// export const getFoodCategories = async (req, res, next) => {
+//   try {
+//     const startIndex = parseInt(req.query.startIndex) || 0;
+//     const sortDirection = req.query.order === 'asc' ? 1 : -1;
+//     const category = req.query.category;
+
+//     const query = category ? { category } : {};
+
+//     const foodCategories = await FoodCategory.find(query)
+//       .sort({ updatedAt: sortDirection })
+//       .skip(startIndex)
+//       .exec();
+
+//     res.status(200).json({ foodCategories });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 export const getFoodCategories = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
@@ -43,9 +62,14 @@ export const getFoodCategories = async (req, res, next) => {
       .skip(startIndex)
       .exec();
 
+    if (!foodCategories || foodCategories.length === 0) {
+      return res.status(404).json({ message: 'No food categories found' });
+    }
+
     res.status(200).json({ foodCategories });
   } catch (error) {
-    next(error);
+    console.error('Error fetching food categories:', error); // Log the error
+    res.status(500).json({ message: 'Internal server error', error });
   }
 };
 
@@ -93,3 +117,4 @@ export const updateFoodCategory = async (req, res, next) => {
     next(error);
   }
 };
+

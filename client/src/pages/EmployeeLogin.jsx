@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Cover_Image from "../assets/coverphoto.jpg";
+import Cover_Image from "../assets/emplogin1.jpg";
 import { Alert, Spinner } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice";
@@ -87,7 +87,7 @@ export default function EmployeeLogin() {
             </div>
 
             <div className="flex flex-col w-full my-4">
-              <button type="submit" className="w-full text-[#d4d4d4] my-2 bg-[#4c0000] rounded-md p-3 text-center flex items-center justify-center cursor-pointer hover:bg-[#7e1010]" disabled={loading}>
+              <button type="submit" className="w-full text-[#d4d4d4] my-2 bg-[#4c0042] rounded-md p-3 text-center flex items-center justify-center cursor-pointer hover:bg-[#7e1010]" disabled={loading}>
                 {loading ? (
                   <>
                     <Spinner size='sm'/>

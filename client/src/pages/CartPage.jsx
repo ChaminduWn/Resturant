@@ -13,7 +13,7 @@ export default function CartPage() {
         }
       });
       const data = await response.json();
-      setCartItems(data.cartItems);
+      setCartItems(data.items || []);
     } catch (error) {
       console.error('Error fetching cart items:', error);
     }
@@ -54,8 +54,8 @@ export default function CartPage() {
         <ul>
           {cartItems.map((item) => (
             <li key={item._id}>
-              <h3>{item.foodName}</h3>
-              <p>Price: ${item.price}</p>
+              <h3>{item.foodId.foodName}</h3>
+              <p>Price: ${item.foodId.price}</p>
               <p>Quantity: 
                 <button onClick={() => updateQuantity(item._id, item.quantity - 1)}>-</button>
                 {item.quantity}

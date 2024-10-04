@@ -15,6 +15,11 @@ import AdminPrivateRoute from "./components/AdminPrivateRoutes.jsx";
 import AdminViewEmployeeDetails from "./components/AdminViewEmployeeDetails.jsx";
 import CartPage from './pages/CartPage.jsx'
 import PaymentPage from './pages/PaymentPage.jsx'
+import Shopping from './components/ShoppingCart.jsx'
+import ShippingPage from './pages/ShippingPage..jsx'
+import PaymentSelection from './pages/PaymentSelect.jsx'
+import PaymentSuccess from './pages/PaymentSuccess.jsx'
+import PayNow from './components/PayNow.jsx'
 
 
 
@@ -33,6 +38,27 @@ export default function App() {
         <Route path="/employee-login" element={<EmployeeLogin />} />
 
         <Route path="/item" element={<Item />} />
+        {/* <Route path="/shoppingCart" element={<ShoppingCart />} /> */}
+
+        <Route
+          path="/shoppingCart"
+          element={<Shopping />}
+        />
+
+        
+
+<Route path="/Checkout/payment" element={<PayNow />} />
+<Route path="/Checkout/payment/shipping" element={<ShippingPage />} />
+<Route
+          path="/Checkout/payment/paymentSelect"
+          element={<PaymentSelection />}
+        />
+
+<Route path="/Checkout/payment/success" element={<PaymentSuccess />} />
+
+
+
+
         <Route path="/cart" element={<CartPage />} />
         <Route path="/payment" element={<PaymentPage />} />
 

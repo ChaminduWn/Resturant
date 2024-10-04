@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 import {
   getDownloadURL,
   getStorage,
@@ -64,13 +66,30 @@ export default function FoodCategoryForm() {
         setImageUploadError("Error uploading image. Please try again.");
         setImageUploadProgress(null);
         setImageUploading(false);
+
+        Toastify({
+          text: "Error uploading image!",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
       },
       async () => {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
         setFormData((prev) => ({ ...prev, image: downloadURL }));
         setImageUploading(false);
+
+        Toastify({
+          text: "Image uploaded successfully!",
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
       }
     );
+    
   };
 
   // Handle form submission
@@ -92,7 +111,15 @@ export default function FoodCategoryForm() {
       });
 
       if (response.ok) {
-        alert("Food Item created successfully");
+
+        Toastify({
+          text: "Food item created successfully!",
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
+
         setFormData({
           foodName: "",
           description: "",
@@ -103,10 +130,24 @@ export default function FoodCategoryForm() {
         setImageFile(null);
         setImageUploadProgress(null);
       } else {
-        alert("Failed to create food item");
+        Toastify({
+          text: "Failed to create food item!",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
       }
     } catch (error) {
       console.error("Error creating food item:", error);
+
+      Toastify({
+        text: "Error occurred while creating food item!",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+      }).showToast();
     }
   };
 

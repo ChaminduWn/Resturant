@@ -1,10 +1,9 @@
-import express from 'express';
-import { processPayment } from '../controllers/payment.controller.js';
-import { verifyToken } from '../utils/verifyUser.js';
+import express from "express";
+import { processPayment } from "../controllers/payment.controller.js";
 
 const router = express.Router();
 
-
-router.post('/processPayment', verifyToken, processPayment);
+// Route to process payment
+router.post("/payment", processPayment);
 
 export default router;

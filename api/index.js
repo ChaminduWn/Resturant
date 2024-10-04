@@ -12,6 +12,11 @@ import cookieParser from 'cookie-parser';
 import employeeRoutes from "./routes/employee.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
 
+import checkoutShopRoutes from "./routes/checkoutShop.routes.js";
+
+
+import shippingRoutes from "./routes/shipping.routes.js";
+
 
 
 dotenv.config();   
@@ -48,6 +53,8 @@ app.listen(3000, () => {
   app.use('/api/cart', cartRoutes);
   app.use('/api/payment', paymentRoutes);
 
+  app.use("/api/pay", checkoutShopRoutes);
+  app.use("/api/shipping", shippingRoutes);
 
 
 

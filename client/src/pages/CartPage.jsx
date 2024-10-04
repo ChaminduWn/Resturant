@@ -6,8 +6,18 @@ export default function CartPage() {
   const navigate = useNavigate();
 
   const fetchCartItems = async () => {
+    const userData = JSON.parse(localStorage.getItem("persist:root"));
+    const user = userData && JSON.parse(userData.user)?.currentUser;
+    const userId = user?._id;
+
+    if (!userId) {
+      alert("User not logged in. Please login to view the cart.");
+      navigate("/login");
+      return;
+    }
+
     try {
-      const response = await fetch('/api/cart/getCart', {
+      const response = await fetch(`/api/cart/getCart/${userId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -53,13 +63,13 @@ export default function CartPage() {
       ) : (
         <ul>
           {cartItems.map((item) => (
-            <li key={item._id}>
+            <li key={item.foodId._id}>
               <h3>{item.foodId.foodName}</h3>
               <p>Price: ${item.foodId.price}</p>
               <p>Quantity: 
-                <button onClick={() => updateQuantity(item._id, item.quantity - 1)}>-</button>
+                <button onClick={() => updateQuantity(item.foodId._id, item.quantity - 1)}>-</button>
                 {item.quantity}
-                <button onClick={() => updateQuantity(item._id, item.quantity + 1)}>+</button>
+                <button onClick={() => updateQuantity(item.foodId._id, item.quantity + 1)}>+</button>
               </p>
             </li>
           ))}

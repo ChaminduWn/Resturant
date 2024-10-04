@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 import { useNavigate } from "react-router-dom";
 
 export default function FoodCategoryList() {
@@ -7,6 +9,7 @@ export default function FoodCategoryList() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false); // State to show/hide delete dialog
   const [itemToDelete, setCategoryToDelete] = useState(null); // Store the selected category for deletion
   const [itemToEdit, setCategoryToEdit] = useState(null); // Store the selected category for editing
+  const [showEditDialog, setShowEditDialog] = useState(false); // State to control the visibility of the edit modal
   const [formData, setFormData] = useState({
     foodName: "",
     description: "",
@@ -28,6 +31,13 @@ export default function FoodCategoryList() {
       setFoodCategories(data.foodItems);
     } catch (error) {
       console.error("Error fetching food categories:", error);
+      Toastify({
+        text: "Error fetching food categories!",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+      }).showToast();
     }
   };
 
@@ -41,16 +51,33 @@ export default function FoodCategoryList() {
       });
 
       if (response.ok) {
-        setFoodCategories(
-          foodItems.filter((item) => item._id !== id)
-        );
-        alert("Food category deleted successfully");
+        setFoodCategories(foodItems.filter((item) => item._id !== id));
+        Toastify({
+          text: "Food category deleted successfully!",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
         closeDeleteDialog();
       } else {
-        alert("Failed to delete food category");
+        Toastify({
+          text: "Failed to delete food category!",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
       }
     } catch (error) {
       console.error("Error deleting food category:", error);
+      Toastify({
+        text: "Error deleting food category!",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+      }).showToast();
     }
   };
 
@@ -63,6 +90,7 @@ export default function FoodCategoryList() {
       price: item.price,
       image: item.image,
     });
+    setShowEditDialog(true); // Show the edit dialog (pop-up)
   };
 
   const handleChange = (e) => {
@@ -70,28 +98,56 @@ export default function FoodCategoryList() {
   };
 
   const updateFoodCategory = async () => {
+    const formDataToSend = new FormData();
+    formDataToSend.append("foodName", formData.foodName);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("category", formData.category);
+    formDataToSend.append("price", formData.price);
+
+    // Only append the image if a new one is selected
+    if (selectedImage) {
+      formDataToSend.append("image", selectedImage);
+    }
+
     try {
-      const response = await fetch(
-        `/api/foods/updateFoods/${itemToEdit._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`/api/foods/updateFoods/${itemToEdit._id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formDataToSend,
+      });
 
       if (response.ok) {
-        alert("Food item updated successfully");
         setCategoryToEdit(null); // Reset edit state
+        setShowEditDialog(false); // Hide the edit dialog (pop-up)
         fetchFoodCategories(); // Refresh food items
+
+        Toastify({
+          text: "Food item updated successfully!",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
       } else {
-        alert("Failed to update food item");
+        Toastify({
+          text: "Failed to update food item!",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
       }
     } catch (error) {
       console.error("Error updating food item:", error);
+      Toastify({
+        text: "Error updating food item!",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+      }).showToast();
     }
   };
 
@@ -129,21 +185,11 @@ export default function FoodCategoryList() {
               <th scope="col" className="px-16 py-3">
                 <span className="sr-only">Image</span>
               </th>
-              <th scope="col" className="px-6 py-3">
-                Food Name
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Category
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Description
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Price
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Action
-              </th>
+              <th scope="col" className="px-6 py-3">Food Name</th>
+              <th scope="col" className="px-6 py-3">Category</th>
+              <th scope="col" className="px-6 py-3">Description</th>
+              <th scope="col" className="px-6 py-3">Price</th>
+              <th scope="col" className="px-6 py-3">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -182,7 +228,7 @@ export default function FoodCategoryList() {
                     onClick={() => openDeleteDialog(item)}
                     className="px-3 py-2 ml-2 text-sm font-medium text-red-600 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-700 dark:text-white"
                   >
-                    Remove
+                    Delete
                   </button>
                 </td>
               </tr>
@@ -191,48 +237,37 @@ export default function FoodCategoryList() {
         </table>
       )}
 
-      {/* Render update form when a category is being edited */}
-      {itemToEdit && (
-        <div className="mt-6">
-          <h3 className="text-xl font-semibold">Edit Food Category</h3>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              updateFoodCategory();
-            }}
-          >
-            <div className="grid grid-cols-1 gap-4 text-sm gap-y-2 md:grid-cols-5">
-              <div className="md:col-span-5">
-                <label htmlFor="foodName">Food Name</label>
+      {/* Edit dialog */}
+      {showEditDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
+          <div className="p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Edit Food Category
+            </h2>
+            <form>
+              <div className="mt-2">
+                <label htmlFor="foodName" className="block text-sm text-gray-700 dark:text-gray-400">
+                  Food Name:
+                </label>
                 <input
                   type="text"
+                  id="foodName"
                   name="foodName"
                   value={formData.foodName}
                   onChange={handleChange}
-                  className="w-full h-10 px-4 mt-1 border rounded bg-gray-50"
-                  required
+                  className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-gray-300"
                 />
               </div>
-
-              
-              <div className="md:col-span-5">
-                <label htmlFor="description">Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="w-full h-20 px-4 mt-1 border rounded bg-gray-50"
-                  required
-                />
-              </div>
-
-              <div className="md:col-span-3">
-                <label htmlFor="category">Category</label>
+              <div className="mt-2">
+                <label htmlFor="category" className="block text-sm text-gray-700 dark:text-gray-400">
+                  Category:
+                </label>
                 <select
+                  id="category"
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  className="w-full h-10 px-4 mt-1 border rounded bg-gray-50"
+                  className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-gray-300"
                 >
                   <option value="Breakfast">Breakfast</option>
                   <option value="Lunch">Lunch</option>
@@ -242,55 +277,88 @@ export default function FoodCategoryList() {
                   <option value="Desserts">Desserts</option>
                 </select>
               </div>
-
-              <div className="md:col-span-2">
-                <label htmlFor="price">Price</label>
+              <div className="mt-2">
+                <label htmlFor="description" className="block text-sm text-gray-700 dark:text-gray-400">
+                  Description:
+                </label>
                 <input
-                  type="number"
+                  type="text"
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-gray-300"
+                />
+              </div>
+              <div className="mt-2">
+                <label htmlFor="price" className="block text-sm text-gray-700 dark:text-gray-400">
+                  Price:
+                </label>
+                <input
+                  type="text"
+                  id="price"
                   name="price"
                   value={formData.price}
                   onChange={handleChange}
-                  className="w-full h-10 px-4 mt-1 border rounded bg-gray-50"
-                  required
+                  className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-gray-300"
                 />
               </div>
 
-              <div className="text-right md:col-span-5">
+              {/* Image upload section */}
+              <div className="mt-2">
+                <label htmlFor="image" className="block text-sm text-gray-700 dark:text-gray-400">
+                  Image:
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  onChange={handleImageChange}
+                  className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-gray-300"
+                />
+              </div>
+
+              <div className="flex justify-end mt-4">
                 <button
-                  type="submit"
-                  className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700"
+                  type="button"
+                  onClick={() => updateFoodCategory()}
+                  className="px-4 py-2 mr-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600"
                 >
-                  Update Food Category
+                  Update
                 </button>
                 <button
                   type="button"
-                  onClick={() => setCategoryToEdit(null)}
-                  className="px-4 py-2 ml-2 font-bold text-gray-700 bg-gray-300 rounded hover:bg-gray-400"
+                  onClick={() => setShowEditDialog(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300"
                 >
                   Cancel
                 </button>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       )}
 
-      {/* Delete confirmation dialog */}
+      {/* Delete dialog (confirm delete action) */}
       {showDeleteDialog && (
-        <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-75">
-          <div className="p-6 bg-white rounded-lg">
-            <h3 className="text-lg font-semibold">Confirm Delete</h3>
-            <p>Are you sure you want to delete {itemToDelete.foodName}?</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
+          <div className="p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Confirm Deletion
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              Are you sure you want to delete this category?
+            </p>
             <div className="flex justify-end mt-4">
               <button
                 onClick={() => deleteFoodCategory(itemToDelete._id)}
-                className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
+                className="px-4 py-2 mr-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600"
               >
-                Confirm
+                Delete
               </button>
               <button
                 onClick={closeDeleteDialog}
-                className="px-4 py-2 ml-2 font-bold text-gray-700 bg-gray-300 rounded hover:bg-gray-400"
+                className="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300"
               >
                 Cancel
               </button>

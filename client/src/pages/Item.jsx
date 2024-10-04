@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 export default function Item() {
-  const [foodItems, setFoodCategories] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [formData, setFormData] = useState({
-    foodName: "",
-    description: "",
-    category: "Breakfast",
-    price: "",
-    image: "",
-  });
-
+  const [foodItems, setFoodItems] = useState([]);
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
-  // Fetch all food categories (or items)
-  const fetchFoodCategories = async () => {
+  // Fetch all food items
+  const fetchFoodItems = async () => {
     try {
       const response = await fetch("/api/foods/getAllFoods", {
         headers: {
@@ -23,126 +16,127 @@ export default function Item() {
         },
       });
       const data = await response.json();
-      setFoodCategories(data.foodItems);
+      setFoodItems(data.foodItems);
     } catch (error) {
-      console.error("Error fetching food categories:", error);
+      console.error("Error fetching food items:", error);
     }
+  };
+
+  // Update cart count
+  const updateCartCount = () => {
+    const userId = localStorage.getItem("userId");
+    const userCart = JSON.parse(localStorage.getItem(`cart_${userId}`) || "[]");
+    setCartCount(userCart.length);
   };
 
   // Add food item to the cart
-  const addToCart = async (item) => {
-    // Retrieve the user object from local storage and parse it
-    const userData = JSON.parse(localStorage.getItem("persist:root"));
+  const addToCart = (item) => {
+    const userId = localStorage.getItem("userId");
+    const cartKey = `cart_${userId}`;
+    const currentCartList = JSON.parse(localStorage.getItem(cartKey) || "[]");
 
-    // If userData is valid, parse the currentUser object from it
-    const user = userData && JSON.parse(userData.user)?.currentUser;
-
-    const userId = user?._id; // Retrieve the user ID
-
-    // Debugging: Print userId to check if it's retrieved correctly
-    console.log("User ID:", userId);
-
-    // If the user ID is not found, prompt the user to login
-    if (!userId || userId === "undefined") {
-      alert("User not logged in. Please login to add items to the cart.");
-      navigate("/login"); // Redirect to login if user ID is not found
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/cart/addToCart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
-          foodId: item._id,
-          quantity: 1,
-          userId: userId, // Use the correct userId here
-        }),
+    if (!currentCartList.some((cartItem) => cartItem.id === item._id)) {
+      currentCartList.push({
+        id: item._id,
+        quantity: 1,
+        price: item.price,
+        foodName: item.foodName,
+        image: item.image,
       });
-
-      if (response.ok) {
-        alert("Food added to cart!");
-        navigate(`/cart?foodId=${item._id}&userId=${userId}&quantity=1`); // Navigate to the cart page with query params
-      } else {
-        alert("Failed to add food to cart");
-      }
-    } catch (error) {
-      console.error("Error adding to cart:", error);
+    } else {
+      // Update quantity if item already exists
+      currentCartList.forEach((cartItem) => {
+        if (cartItem.id === item._id) {
+          cartItem.quantity += 1;
+        }
+      });
     }
+
+    localStorage.setItem(cartKey, JSON.stringify(currentCartList));
+    setCartCount(currentCartList.length); // Update cart count
+    alert("Item added to cart!");
   };
 
-  // Handle image change
-  const handleImageChange = (e) => {
-    setSelectedImage(e.target.files[0]); // Save the selected image file
+  // Handle "Buy Now" button click
+  const handleBuyNow = (item) => {
+    addToCart(item);
+    navigate(`/shoppingCart`);
   };
 
-  // Fetch food categories (items) on component load
   useEffect(() => {
-    fetchFoodCategories();
+    fetchFoodItems();
+    updateCartCount();
   }, []);
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-        Food Categories
-      </h2>
-      {foodItems.length === 0 ? (
-        <p className="text-gray-600 dark:text-gray-400">No categories available</p>
-      ) : (
-        <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-16 py-3">
-                <span className="sr-only">Image</span>
-              </th>
-              <th scope="col" className="px-6 py-3">Food Name</th>
-              <th scope="col" className="px-6 py-3">Category</th>
-              <th scope="col" className="px-6 py-3">Description</th>
-              <th scope="col" className="px-6 py-3">Price</th>
-              <th scope="col" className="px-6 py-3">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {foodItems.map((item) => (
-              <tr
-                key={item._id}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-              >
-                <td className="p-4">
-                  <img
-                    src={item.image}
-                    className="w-16 max-w-full max-h-full md:w-32"
-                    alt={item.foodName}
-                  />
-                </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                  {item.foodName}
-                </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                  {item.category}
-                </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                  {item.description}
-                </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                  {`$${item.price}`}
-                </td>
-                <td className="px-6 py-4">
-                  <button
-                    onClick={() => addToCart(item)}
-                    className="px-3 py-2 ml-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700"
-                  >
-                    Add to Cart
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+    <div className="min-h-screen">
+      {/* Top bar with "Add Your Item" and Cart */}
+      <div className="flex items-center justify-between p-4 bg-gray-100">
+        <h1 className="text-2xl font-bold text-gray-700">Add Your Item</h1>
+        <div className="relative flex items-center">
+          <Link to={`/shoppingCart`}>
+            <span className="text-3xl text-black">
+              <MdOutlineShoppingCart />
+            </span>
+          </Link>
+          <div className="absolute flex items-center justify-center w-5 h-5 p-1 text-white bg-black rounded-full -top-2 -right-2">
+            <p className="text-sm">{cartCount}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="flex items-center justify-center">
+        <div className="max-w-[1200px] mx-auto">
+          {foodItems.length === 0 ? (
+            <p className="text-gray-600 dark:text-gray-400">No items available</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {foodItems.map((item) => (
+                <div
+                  key={item._id}
+                  className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-full h-[250px]"
+                >
+                  <div className="relative mx-2 mt-2 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-[150px]">
+                    <img
+                      src={item.image}
+                      alt={item.foodName}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                  <div className="p-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="block font-sans text-sm font-medium leading-relaxed text-blue-gray-900">
+                        {item.foodName}
+                      </p>
+                      <p className="block font-sans text-sm font-medium leading-relaxed text-blue-gray-900">
+                        ${item.price}
+                      </p>
+                    </div>
+                    <p className="block font-sans text-xs font-normal leading-normal text-gray-700 opacity-75">
+                      {item.description}
+                    </p>
+                  </div>
+                  <div className="flex mt-4">
+                    <button
+                      onClick={() => addToCart(item)}
+                      className="px-4 py-2 mr-2 font-semibold text-white bg-red-900 rounded hover:bg-red-800"
+                    >
+                      Add to Cart
+                    </button>
+                    <button
+                      onClick={() => handleBuyNow(item)}
+                      className="bg-[#4c0000] hover:bg-[#7e1010] text-white font-semibold px-4 py-2 rounded"
+                    >
+                      Buy Now
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

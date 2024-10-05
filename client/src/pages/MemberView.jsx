@@ -49,14 +49,15 @@ const MemberView = () => {
   };
 
   return (
+    <>
     <div className="h-full bg-[#1f1f1f] dark:bg-gray-900">
       <div className="mx-auto" style={{ height: '700px' }}>
-        <div className="flex justify-center px-6 py-12 h-full">
-          <div className="w-full xl:w-3/4 lg:w-11/12 flex h-full">
-            <div className="bg-gray-400 dark:bg-gray-800 lg:block lg:w-5/12 rounded-l-lg hidden" style={{ backgroundImage: `url(${user && user.profilePicture})`, backgroundSize: 'cover', width: '200px', height: '200px' }}>
+        <div className="flex justify-center h-full px-6 py-12">
+          <div className="flex w-full h-full xl:w-3/4 lg:w-11/12">
+            <div className="hidden bg-gray-400 rounded-l-lg dark:bg-gray-800 lg:block lg:w-5/12" style={{ backgroundImage: `url(${user && user.profilePicture})`, backgroundSize: 'cover', width: '200px', height: '200px' }}>
             </div>
 
-            <div className="w-full lg:w-7/12 bg-white dark:bg-black p-5 rounded-lg lg:rounded-l-none" ref={componentRef}>
+            <div className="w-full p-5 bg-white rounded-lg lg:w-7/12 dark:bg-black lg:rounded-l-none" ref={componentRef}>
               <div className="text-black">
                 <div className='text-center'> Member Information </div>
                 {user ? (
@@ -130,6 +131,7 @@ const MemberView = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

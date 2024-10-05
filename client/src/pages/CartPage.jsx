@@ -56,6 +56,9 @@ export default function CartPage() {
   }, []);
 
   return (
+
+    <>
+           
     <div>
       <h2>Your Cart</h2>
       {cartItems.length === 0 ? (
@@ -77,5 +80,6 @@ export default function CartPage() {
       )}
       <button onClick={proceedToPayment}>Proceed to Payment</button>
     </div>
+    </>
   );
 }

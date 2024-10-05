@@ -64,29 +64,7 @@ export default function DashSideBar() {
             </Link>
           )}
 
-          {!currentUser.isAdmin && (
-            <>
-              <Link to='/'>
-                <Sidebar.Item className='hover:bg-gray-700'>Membership</Sidebar.Item>
-              </Link>
-
-              <Link to='/'>
-                <Sidebar.Item className='hover:bg-gray-700'>Plans</Sidebar.Item>
-              </Link>
-
-              <Link to='/dashboard?tab=tasks'>
-                <Sidebar.Item
-                  active={tab === 'tasks'}
-                  labelColor='dark'
-                  as='div'
-                  className={`hover:bg-gray-700 ${tab === 'tasks' ? 'bg-gray-800' : ''}`}
-                >
-                  Your Tasks
-                </Sidebar.Item>
-              </Link>
-            </>
-          )}
-
+         
           <Sidebar.Item
             className='cursor-pointer hover:bg-red-700'
             onClick={handleSignout}

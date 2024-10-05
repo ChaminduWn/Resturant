@@ -38,6 +38,7 @@ export default function AdminDashboard() {
 
   return (
     <>
+
       <div className="min-h-screen flex flex-col md:flex-row bg-[#d4d4d4]">
         <div className="md:w-56">
           <AdminDashSideBar />

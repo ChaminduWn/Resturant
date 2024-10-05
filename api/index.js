@@ -15,7 +15,7 @@ import paymentRoutes from "./routes/payment.routes.js";
 import checkoutShopRoutes from "./routes/checkoutShop.routes.js";
 
 
-import shippingRoutes from "./routes/shipping.routes.js";
+// import shippingRoutes from "./routes/shipping.routes.js";
 
 
 
@@ -54,7 +54,7 @@ app.listen(3000, () => {
   app.use('/api/payment', paymentRoutes);
 
   app.use("/api/pay", checkoutShopRoutes);
-  app.use("/api/shipping", shippingRoutes);
+  // app.use("/api/shipping", shippingRoutes);
 
 
 

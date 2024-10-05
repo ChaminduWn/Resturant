@@ -47,6 +47,8 @@ export default function SignIn() {
   };
 
   return (
+
+    <>
     <div className='min-h-screen mt-20 bg-gray-100'>
       <div className='flex flex-col max-w-3xl gap-10 p-3 mx-auto md:flex-row md:items-center'>
         
@@ -112,5 +114,6 @@ export default function SignIn() {
         </div>
       </div>
     </div>
+    </>
   );
 }

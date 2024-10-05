@@ -15,6 +15,7 @@ export default function Dashboard() {
      }         
 }, [location.search]);
   return (
+    <>
    <div className="flex flex-col min-h-screen text-white md:flex-row">
     <div className='md:w-56'>
       
@@ -29,5 +30,6 @@ export default function Dashboard() {
       {tab === 'users' && <DashUsers />}
 
       </div>
+      </>
   );
 }

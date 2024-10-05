@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const ShoppingCart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  // Get user ID from local storage
   const userId = localStorage.getItem("userId");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
-    const currentCartList =
-      JSON.parse(localStorage.getItem(`cart_${userId}`) || "[]") || [];
+    // Retrieve cart items from local storage
+    const currentCartList = JSON.parse(localStorage.getItem(`cart_${userId}`) || "[]") || [];
     if (currentCartList.length > 0) {
       setCartItems(currentCartList);
       calculateTotal(currentCartList);
     }
-  }, []);
+  }, [userId]);
 
   const calculateTotal = (items) => {
-    const total = items.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0
-    );
+    // Calculate total price of items in the cart
+    const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
     setTotalPrice(total);
   };
 
   const updateQuantity = (id, delta) => {
+    // Update the quantity of items in the cart
     const updatedCart = cartItems.map((item) =>
       item.id === id ? { ...item, quantity: item.quantity + delta } : item
     );
@@ -35,14 +36,21 @@ const ShoppingCart = () => {
   };
 
   const updateLocalStorage = (updatedCart) => {
+    // Update the cart in local storage
     localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
   };
 
   const removeItem = (id) => {
+    // Remove an item from the cart
     const updatedCart = cartItems.filter((item) => item.id !== id);
     setCartItems(updatedCart);
     calculateTotal(updatedCart);
     updateLocalStorage(updatedCart);
+  };
+
+  const handleOrderNow = () => {
+    // Navigate to the payment page with cart items and total price
+    navigate("/checkout/payment", { state: { cartItems, totalPrice, userId } });
   };
 
   return (
@@ -92,16 +100,12 @@ const ShoppingCart = () => {
             <span className="text-lg font-semibold">${totalPrice.toFixed(2)}</span>
           </div>
           <div className="flex justify-end mt-4">
-            <Link
-              to={{
-                pathname: "/checkout/payment",
-                state: { cartItems, totalPrice, userId },
-              }}
+            <button 
+              onClick={handleOrderNow} 
+              className="bg-[#4c0000] hover:bg-[#7e1010] text-white py-2 px-4 rounded-md"
             >
-              <button className="bg-[#4c0000] hover:bg-[#7e1010] text-white py-2 px-4 rounded-m">
-                Order Now
-              </button>
-            </Link>
+              Order Now
+            </button>
           </div>
         </div>
       )}

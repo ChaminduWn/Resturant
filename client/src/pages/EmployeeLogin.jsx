@@ -4,7 +4,6 @@ import Cover_Image from "../assets/emplogin1.jpg";
 import { Alert, Spinner } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice";
-import Header from "../components/Header";
 export default function EmployeeLogin() {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -48,6 +47,7 @@ export default function EmployeeLogin() {
 
   return (
     <>
+
     <div className="flex w-full h-screen">
       <div className="flex-col hidden h-screen md:relative md:w-1/2 md:flex">
         <div className="absolute top-[50%] left-[10%] flex flex-col"></div>

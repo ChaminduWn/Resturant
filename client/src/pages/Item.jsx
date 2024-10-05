@@ -69,6 +69,9 @@ export default function Item() {
   }, []);
 
   return (
+
+    <>
+            
     <div className="min-h-screen">
       {/* Top bar with "Add Your Item" and Cart */}
       <div className="flex items-center justify-between p-4 bg-gray-100">
@@ -138,5 +141,6 @@ export default function Item() {
         </div>
       </div>
     </div>
+    </>
   );
 }

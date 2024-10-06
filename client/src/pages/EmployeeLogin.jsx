@@ -57,7 +57,7 @@ export default function EmployeeLogin() {
         <div className="w-full flex flex-col max-w-[550px] m-auto">
           <div className="flex flex-col w-full mb-2">
             <h1 className="text-2xl font-normal text-[#d4d4d4] my-8">
-              CJ Gym & Fitness Centre
+              Foods and Resturants
             </h1>
             <h3 className="text-4xl font-semibold mb-4 text-[#d4d4d4]">
               Login

@@ -10,6 +10,7 @@ import DashboardComponent from "../components/DashboardComponent.jsx";
 import SearchEmployee from "../components/SearchEmployee.jsx"; 
 import FoodCategoryForm from "../components/FoodCategoryForm.jsx";
 import FoodCategoryList from "../components/FoodCategoryList.jsx";
+import PaymentManager from "../components/PaymentManager.jsx";
 
 export default function AdminDashboard() {
   const location = useLocation();
@@ -55,6 +56,11 @@ export default function AdminDashboard() {
 
           {tab === "add-foods" && <FoodCategoryForm />}
           {tab === "view-foods" && <FoodCategoryList />}
+
+          {tab === "payment-manager" && <PaymentManager />}
+
+
+
           
        
         </div>

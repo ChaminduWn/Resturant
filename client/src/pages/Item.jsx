@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import Toastify from "toastify-js"; 
+import "toastify-js/src/toastify.css"; 
 
 export default function Item() {
   const [foodItems, setFoodItems] = useState([]);
@@ -54,7 +56,7 @@ export default function Item() {
 
     localStorage.setItem(cartKey, JSON.stringify(currentCartList));
     setCartCount(currentCartList.length); // Update cart count
-    alert("Item added to cart!");
+    showToast("Item added to cart!");
   };
 
   // Handle "Buy Now" button click
@@ -63,15 +65,28 @@ export default function Item() {
     navigate(`/shoppingCart`);
   };
 
+  // Show toast notification
+  const showToast = (message) => {
+    Toastify({
+      text: message,
+      duration: 3000,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      backgroundColor: "linear-gradient(to right, #4caf50, #81c784)",
+    }).showToast();
+  };
+
   useEffect(() => {
     fetchFoodItems();
     updateCartCount();
   }, []);
 
-  return (
+  // Check if current user is authenticated
+  const user = JSON.parse(localStorage.getItem("persist:root"))?.user;
+  const currentUser = user ? JSON.parse(user).currentUser : null;
 
-    <>
-            
+  return (
     <div className="min-h-screen">
       {/* Top bar with "Add Your Item" and Cart */}
       <div className="flex items-center justify-between p-4 bg-gray-100">
@@ -98,7 +113,7 @@ export default function Item() {
               {foodItems.map((item) => (
                 <div
                   key={item._id}
-                  className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-full h-[250px]"
+                  className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-full h-[250px] overflow-hidden" // Overflow hidden to keep buttons inside the card
                 >
                   <div className="relative mx-2 mt-2 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-[150px]">
                     <img
@@ -113,27 +128,29 @@ export default function Item() {
                         {item.foodName}
                       </p>
                       <p className="block font-sans text-sm font-medium leading-relaxed text-blue-gray-900">
-                        ${item.price}
+                        LKR {item.price} {/* Change currency to LKR */}
                       </p>
                     </div>
                     <p className="block font-sans text-xs font-normal leading-normal text-gray-700 opacity-75">
                       {item.description}
                     </p>
                   </div>
-                  <div className="flex mt-4">
-                    <button
-                      onClick={() => addToCart(item)}
-                      className="px-4 py-2 mr-2 font-semibold text-white bg-red-900 rounded hover:bg-red-800"
-                    >
-                      Add to Cart
-                    </button>
-                    <button
-                      onClick={() => handleBuyNow(item)}
-                      className="bg-[#4c0000] hover:bg-[#7e1010] text-white font-semibold px-4 py-2 rounded"
-                    >
-                      Buy Now
-                    </button>
-                  </div>
+                  {currentUser?._id && (
+                    <div className="absolute flex justify-between bottom-3 left-3 right-3"> {/* Changed to absolute for better positioning */}
+                      <button
+                        onClick={() => addToCart(item)}
+                        className="px-4 py-2 font-semibold text-white bg-green-600 rounded hover:bg-green-500" // Updated button color
+                      >
+                        Add to Cart
+                      </button>
+                      <button
+                        onClick={() => handleBuyNow(item)}
+                        className="px-4 py-2 font-semibold text-white bg-blue-600 rounded hover:bg-blue-500" // Updated button color
+                      >
+                        Buy Now
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -141,6 +158,5 @@ export default function Item() {
         </div>
       </div>
     </div>
-    </>
   );
 }

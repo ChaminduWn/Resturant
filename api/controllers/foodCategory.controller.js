@@ -45,28 +45,20 @@ export const createFoodItem = async (req, res, next) => {
   }
 };
 
-// Get all food items
+// Get all food items or filter by search query
 export const getFoodItem = async (req, res, next) => {
   try {
-    const startIndex = parseInt(req.query.startIndex) || 0;
-    const sortDirection = req.query.order === 'asc' ? 1 : -1;
-    const item = req.query.item;
-
-    const query = item ? { item } : {};
-
-    const foodItems = await FoodItem.find(query)
-      .sort({ updatedAt: sortDirection })
-      .skip(startIndex)
-      .exec();
-
-    if (!foodItems || foodItems.length === 0) {
-      return res.status(404).json({ message: 'No food categories found' });
+    const searchQuery = req.query.search || ""; // Get the search term from the query params
+    const regex = new RegExp(searchQuery, 'i'); // Case-insensitive regex for searching
+    const foodItems = await FoodItem.find({ foodName: regex });
+    
+    if (foodItems.length === 0) {
+      return res.status(404).json({ message: 'No food items found' });
     }
-
+    
     res.status(200).json({ foodItems });
   } catch (error) {
-    console.error('Error fetching food categories:', error); // Log the error
-    res.status(500).json({ message: 'Internal server error', error });
+    next(error);
   }
 };
 

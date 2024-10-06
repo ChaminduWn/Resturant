@@ -45,9 +45,11 @@ export default function App() {
         <Route path="/shoppingCart" element={<Shopping />} />
 
         <Route path="/payment-receipt" element={<PaymentReceipt />} />
-        <Route path="/payment-manager" element={<PaymentManager />} />
+        {/* <Route path="/payment-manager" element={<PaymentManager />} /> */}
 
         <Route path="/Checkout/payment" element={<PayNow />} />
+        {/* <Route path="/Checkout/payment" element={<PayNow />} /> */}
+
 
         {/* <Route path="/Checkout/payment/shipping" element={<ShippingPage />} />
 <Route
@@ -76,7 +78,6 @@ export default function App() {
           <Route path="/member-view/:userId" element={<MemberView />} />
         </Route>
 
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
         {/* <Route path="/updateFoods/:id" element
         ={<FoodCategoryUpdate />} /> */}
       </Routes>

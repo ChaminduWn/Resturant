@@ -7,6 +7,8 @@ import 'react-circular-progressbar/dist/styles.css';
 import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess } from '../redux/user/userSlice';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { Alert, Button, Modal, ModalBody, TextInput } from 'flowbite-react';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function DashProfile() {
   const { currentUser, error, loading } = useSelector((state) => state.user);
@@ -21,6 +23,7 @@ export default function DashProfile() {
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -117,6 +120,7 @@ export default function DashProfile() {
         dispatch(deleteUserFailure(data.message));
       } else {
         dispatch(deleteUserSuccess(data));
+        navigate('/');
       }
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
@@ -133,6 +137,7 @@ export default function DashProfile() {
         console.log(data.message);
       } else {
         dispatch(signoutSuccess());
+        navigate('/');
       }
     } catch (error) {
       console.log(error.message);

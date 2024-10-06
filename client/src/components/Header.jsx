@@ -48,7 +48,7 @@ export default function Header() {
     };
 
     return (
-        <header className={`border-b-2 border-b-black shadow-md relative bg-gradient-to-r from-[#b98192] to-[#4c0035]`}>
+        <header className={`border-b-2 border-b-black shadow-md relative bg-gradient-to-r from-[#AC5180] to-[#160121]`}>
             <div className="flex items-center justify-between p-6 mx-auto max-w-7xl">
                 <Link to="/">
                     <img src={logo} alt="logo" className="w-40" />

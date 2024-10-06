@@ -62,7 +62,7 @@ export default function SignIn() {
           <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
             <h4 className='text-xl font-bold' style={{ color: 'black' }}>Sign in</h4>
             <p className='mt-5 text-sm text-center' style={{ color: '#707070' }}>
-              Welcome back! to CJ Gym and Fitness Center
+              Welcome back! to Food and Resturants
             </p>
             <div> 
               <Label value='Email' style={{ color: 'black' }} />

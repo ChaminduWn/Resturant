@@ -1,9 +1,9 @@
-import { Modal, Table, Button, TextInput } from 'flowbite-react';
+import { Modal, Button, TextInput } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { FaCheck, FaTimes } from 'react-icons/fa';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -17,7 +17,6 @@ export default function DashUsers() {
   const [deleteMessage, setDeleteMessage] = useState('');
   const navigate = useNavigate();
   const { userId } = useParams();
-  const location = useLocation();
 
   useEffect(() => {
     const fetchUsersBySearch = async () => {
@@ -35,22 +34,13 @@ export default function DashUsers() {
 
     const fetchUserById = async () => {
       try {
-        setLoading(true);
         const res = await fetch(`/api/user/getusers?userId=${userId}`);
         const data = await res.json();
-        if (!res.ok) {
-          setError(true);
-          setLoading(false);
-          return;
-        }
         if (res.ok) {
           setUsers(data.users[0]);
-          setLoading(false);
-          setError(false);
         }
       } catch (error) {
-        setError(true);
-        setLoading(false);
+        console.log(error.message);
       }
     };
 
@@ -83,14 +73,12 @@ export default function DashUsers() {
       const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
         method: 'DELETE',
       });
-      const data = await res.json();
       if (res.ok) {
         setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
         setShowModal(false);
         setDeleteMessage('User deleted successfully');
       } else {
         setDeleteMessage('Error deleting user');
-        console.log(data.message);
       }
     } catch (error) {
       setDeleteMessage('Error deleting user');
@@ -106,17 +94,16 @@ export default function DashUsers() {
       user.email,
       user.contactNumber,
       user.address,
-      // user.isAdmin ? 'Yes' : 'No',
     ]);
     doc.autoTable({
-      head: [['Date created', 'Username', 'Email', 'Phone Number', 'Address', 'Admin']],
+      head: [['Date created', 'Username', 'Email', 'Phone Number', 'Address']],
       body: tableData,
     });
     doc.save('user_report.pdf');
   };
 
   return (
-    <div className='p-3 overflow-x-scroll table-auto md:mx-auto scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
+    <div className='p-3 overflow-x-scroll'>
       <div className="flex items-center justify-between mb-4">
         <Button onClick={generateUserReport} className="mr-2">Generate User Report</Button>
         <TextInput
@@ -127,59 +114,53 @@ export default function DashUsers() {
           className="w-64"
         />
       </div>
-      {deleteMessage && (
-        <div className="relative px-4 py-3 mb-4 text-green-700 bg-green-100 border border-green-400 rounded" role="alert">
-          <strong className="font-bold">Success!</strong>
-          <span className="block sm:inline"> {deleteMessage}</span>
-        </div>
-      )}
       {currentUser.isAdmin && users.length > 0 ? (
-        <>
-          <Table hoverable className='shadow-md'>
-            <Table.Head>
-              <Table.HeadCell>Date created</Table.HeadCell>
-              <Table.HeadCell>User image</Table.HeadCell>
-              <Table.HeadCell>Username</Table.HeadCell>
-              <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>Phone Number</Table.HeadCell>
-              <Table.HeadCell>Address</Table.HeadCell>
-              <Table.HeadCell>Admin</Table.HeadCell>
-              <Table.HeadCell>View</Table.HeadCell>
-              <Table.HeadCell>Delete</Table.HeadCell>
-            </Table.Head>
-            {users.map((user) => (
-              <Table.Body className='divide-y' key={user._id}>
-                <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-                  <Table.Cell>
-                    {new Date(user.createdAt).toLocaleDateString()}
-                  </Table.Cell>
-                  <Table.Cell>
+        <div className="relative overflow-x-auto">
+          <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">Date created</th>
+                <th scope="col" className="px-6 py-3">User image</th>
+                <th scope="col" className="px-6 py-3">Username</th>
+                <th scope="col" className="px-6 py-3">Email</th>
+                <th scope="col" className="px-6 py-3">Phone Number</th>
+                <th scope="col" className="px-6 py-3">Address</th>
+                <th scope="col" className="px-6 py-3">Admin</th>
+                <th scope="col" className="px-6 py-3">View</th>
+                <th scope="col" className="px-6 py-3">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={user._id}>
+                  <td className="px-6 py-4">{new Date(user.createdAt).toLocaleDateString()}</td>
+                  <td className="px-6 py-4">
                     <img
                       src={user.profilePicture}
                       alt={user.username}
                       className='object-cover w-10 h-10 bg-gray-500 rounded-full'
                     />
-                  </Table.Cell>
-                  <Table.Cell>{user.username}</Table.Cell>
-                  <Table.Cell>{user.email}</Table.Cell>
-                  <Table.Cell>{user.contactNumber}</Table.Cell>
-                  <Table.Cell>{user.address}</Table.Cell>
-                  <Table.Cell>
+                  </td>
+                  <td className="px-6 py-4">{user.username}</td>
+                  <td className="px-6 py-4">{user.email}</td>
+                  <td className="px-6 py-4">{user.contactNumber}</td>
+                  <td className="px-6 py-4">{user.address}</td>
+                  <td className="px-6 py-4">
                     {user.isAdmin ? (
                       <FaCheck className='text-green-500' />
                     ) : (
                       <FaTimes className='text-black' />
                     )}
-                  </Table.Cell>
-                  <Table.Cell>
+                  </td>
+                  <td className="px-6 py-4">
                     <span
                       onClick={() => navigate(`/member-view/${user._id}`)}
                       className='font-medium text-green-500 cursor-pointer hover:underline'
                     >
                       View
                     </span>
-                  </Table.Cell>
-                  <Table.Cell>
+                  </td>
+                  <td className="px-6 py-4">
                     <span
                       onClick={() => {
                         setShowModal(true);
@@ -189,11 +170,11 @@ export default function DashUsers() {
                     >
                       Delete
                     </span>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            ))}
-          </Table>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           {showMore && (
             <button
               onClick={handleShowMore}
@@ -202,7 +183,7 @@ export default function DashUsers() {
               Show more
             </button>
           )}
-        </>
+        </div>
       ) : (
         <p>You have no users yet!</p>
       )}

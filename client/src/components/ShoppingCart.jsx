@@ -69,7 +69,7 @@ const ShoppingCart = () => {
               />
               <div className="flex flex-col">
                 <span className="text-lg font-medium">{item.foodName}</span>
-                <span className="text-lg font-semibold">${item.price}</span>
+                <span className="text-lg font-semibold"> LKR {item.price}</span>
                 <button
                   onClick={() => removeItem(item.id)}
                   className="ml-4 font-medium text-red-500 hover:underline"
@@ -97,7 +97,7 @@ const ShoppingCart = () => {
           ))}
           <div className="flex justify-between pt-6 border-t">
             <span className="text-lg font-semibold">Total</span>
-            <span className="text-lg font-semibold">${totalPrice.toFixed(2)}</span>
+            <span className="text-lg font-semibold">LKR {totalPrice.toFixed(2)}</span>
           </div>
           <div className="flex justify-end mt-4">
             <button 

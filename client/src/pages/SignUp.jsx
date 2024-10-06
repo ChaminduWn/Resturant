@@ -87,7 +87,8 @@ export default function SignUp() {
           <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
             <h4 className='text-xl font-bold' style={{ color: 'black' }}>Sign Up</h4>
             <p className='mt-5 text-sm text-center' style={{ color: '#707070' }}>
-              Welcome to CJ Gym and Fitness Center
+            Welcome to Food and Resturants
+
             </p>
             <div>
               <Label value='Username' style={{ color: 'black' }} />

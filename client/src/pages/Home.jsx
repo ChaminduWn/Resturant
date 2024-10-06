@@ -2,16 +2,24 @@ import aboutCover from "../assets/aboutCover.png";
 import workoutCover from "../assets/workoutCover.png";
 import membershipCover from "../assets/membershipCover.png";
 import { Link } from "react-router-dom";
+import { useEffect } from 'react';
+
 
 export default function Home() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
 
-      <div className="w-full h-screen bg-[linear-gradient(to_right_bottom,rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('./assets/home1.jpg')] bg-center bg-cover">
-
+      <div className="w-full h-screen bg-[linear-gradient(to_right_bottom,rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('./assets/bg13.jpg')] bg-center bg-cover">
+            
+            <div className="pt-12 text-center">
+  <h1 className="text-[#d4d4d4] font-extralight text-2xl lg:text-3xl uppercase opacity-75">
+    Special goodies for you foodies.
+  </h1>
+</div>
         <div className="flex flex-col max-w-6xl gap-6 p-40 px-4 mx-auto">
-          <h1 className="text-[#d4d4d4] font-extrabold text-3xl lg:text-6xl uppercase">
-            Special goodies for you foodies.
-          </h1>
+        
           <div className="text-[#d4d4d4] text-xs sm:text-base">
             Embark on a culinary adventure with us! <br /> Savor exquisite
             dishes, crafted with love,

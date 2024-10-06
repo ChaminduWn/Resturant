@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const PayNow = () => {
   const location = useLocation();
@@ -28,7 +30,14 @@ const PayNow = () => {
 
     // Ensure userId is valid before proceeding
     if (!userId) {
-      alert("User ID is not available. Please log in.");
+      // alert("User ID is not available. Please log in.");
+      Toastify({
+        text: "User ID is not available. Please log in.",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+      }).showToast();
       return;
     }
 
@@ -54,17 +63,38 @@ const PayNow = () => {
       });
 
       if (response.ok) {
-        alert("Payment successful!");
+        Toastify({
+          text: "Payment successful!",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
+        // alert("Payment successful!");
         const result = await response.json();
         // Redirect to PaymentReceipt page with payment details
         navigate("/payment-receipt", { state: { paymentDetails: result.payment, tokenNumber } });
       } else {
         console.error("Payment failed");
-        alert("Payment failed. Please try again.");
+        Toastify({
+          text: "Payment failed. Please try again.",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
+        // alert("Payment failed. Please try again.");
       }
     } catch (error) {
       console.error("Payment failed", error);
-      alert("An error occurred. Please try again.");
+      Toastify({
+        text: "An error occurred. Please try again.",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+      }).showToast();
+      // alert("An error occurred. Please try again.");
     }
   };
 

@@ -108,12 +108,12 @@ const PaymentManager = () => {
             <h2 className="text-lg font-semibold">Search Result</h2>
             <div>
               <p><strong>Token Number:</strong> {filteredPayment.tokenNumber}</p>
-              <p><strong>User:</strong> {filteredPayment.userId.username} ({filteredPayment.userId.email})</p>
-              <p><strong>Total Price:</strong> ${filteredPayment.totalPrice.toFixed(2)}</p>
+              <p><strong>User:</strong> {filteredPayment.userId ? `${filteredPayment.userId.username} (${filteredPayment.userId.email})` : "User info not available"}</p>
+              <p><strong>Total Price:</strong> ${filteredPayment.totalPrice?.toFixed(2)}</p>
               <p><strong>Items:</strong></p>
               <ul>
                 {filteredPayment.cartItems.map((item, index) => (
-                  <li key={index}>{item.foodName} - {item.quantity} x ${item.price.toFixed(2)}</li>
+                  <li key={index}>{item.foodName} - {item.quantity} x ${item.price?.toFixed(2)}</li>
                 ))}
               </ul>
             </div>
@@ -140,12 +140,18 @@ const PaymentManager = () => {
               {payments.map((payment, index) => (
                 <tr key={index}>
                   <td className="p-2 text-center border border-gray-300">{payment.tokenNumber}</td>
-                  <td className="p-2 border border-gray-300">{payment.userId.username} ({payment.userId.email})</td>
-                  <td className="p-2 text-center border border-gray-300">${payment.totalPrice.toFixed(2)}</td>
+                  <td className="p-2 border border-gray-300">
+                    {payment.userId ? (
+                      `${payment.userId.username} (${payment.userId.email})`
+                    ) : (
+                      "User information not available"
+                    )}
+                  </td>
+                  <td className="p-2 text-center border border-gray-300">${payment.totalPrice?.toFixed(2)}</td>
                   <td className="p-2 border border-gray-300">
                     <ul>
                       {payment.cartItems.map((item, index) => (
-                        <li key={index}>{item.foodName} - {item.quantity} x ${item.price.toFixed(2)}</li>
+                        <li key={index}>{item.foodName} - {item.quantity} x ${item.price?.toFixed(2)}</li>
                       ))}
                     </ul>
                   </td>
@@ -171,21 +177,25 @@ const PaymentManager = () => {
             <h2 className="text-lg font-semibold">Payment Details</h2>
             <div>
               <p><strong>Token Number:</strong> {selectedPayment.tokenNumber}</p>
-              <p><strong>User:</strong> {selectedPayment.userId.username} ({selectedPayment.userId.email})</p>
-              <p><strong>Total Price:</strong> ${selectedPayment.totalPrice.toFixed(2)}</p>
+              <p><strong>User:</strong> {selectedPayment.userId ? `${selectedPayment.userId.username} (${selectedPayment.userId.email})` : "User info not available"}</p>
+              <p><strong>Total Price:</strong> ${selectedPayment.totalPrice?.toFixed(2)}</p>
               <p><strong>Items:</strong></p>
               <ul>
                 {selectedPayment.cartItems.map((item, index) => (
-                  <li key={index}>{item.foodName} - {item.quantity} x ${item.price.toFixed(2)}</li>
+                  <li key={index}>{item.foodName} - {item.quantity} x ${item.price?.toFixed(2)}</li>
                 ))}
               </ul>
               <p><strong>Payment Info:</strong></p>
-              <ul>
-                <li>Card Type: {selectedPayment.paymentInfo.cardType}</li>
-                <li>Card Name: {selectedPayment.paymentInfo.cardName}</li>
-                <li>Card Number: {selectedPayment.paymentInfo.cardNumber}</li>
-                <li>Expiration Date: {selectedPayment.paymentInfo.expirationDate}</li>
-              </ul>
+              {selectedPayment.paymentInfo ? (
+                <ul>
+                  <li>Card Type: {selectedPayment.paymentInfo.cardType}</li>
+                  <li>Card Name: {selectedPayment.paymentInfo.cardName}</li>
+                  <li>Card Number: {selectedPayment.paymentInfo.cardNumber}</li>
+                  <li>Expiration Date: {selectedPayment.paymentInfo.expirationDate}</li>
+                </ul>
+              ) : (
+                <p>Payment information not available</p>
+              )}
             </div>
           </div>
         )}

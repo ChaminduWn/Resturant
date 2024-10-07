@@ -103,7 +103,30 @@ export default function AdminDashSideBar() {
                 <MdDashboard color="#D4D4D4" />
                 <span className="text-[15px] ml-4 text-[#D4D4D4]"> Users</span>
               </div>
-              </Link>            
+              </Link>     
+
+                 <Link to="/admin-dashboard?tab=add-foods">
+              <div
+                className={`p-2.5 my-2 mx-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-[#707070] text-white ${
+                  activeTab === "add-foods" ? "bg-[#707070]" : ""
+                }`}
+               >
+                <MdDashboard color="#D4D4D4" />
+                <span className="text-[15px] ml-4 text-[#D4D4D4]"> Add Foods</span>
+              </div>
+              </Link>       
+
+
+              <Link to="/admin-dashboard?tab=view-foods">
+              <div
+                className={`p-2.5 my-2 mx-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-[#707070] text-white ${
+                  activeTab === "view-foods" ? "bg-[#707070]" : ""
+                }`}
+               >
+                <MdDashboard color="#D4D4D4" />
+                <span className="text-[15px] ml-4 text-[#D4D4D4]"> View Foods</span>
+              </div>
+              </Link>
 
             {/* Employee Management */}
             <div
@@ -123,15 +146,7 @@ export default function AdminDashSideBar() {
 
             {dropdowns.isOpenEmp && (
               <div className="text-left text-sm font-light w-4/5 mx-auto text-[#D4D4D4] p-2">
-                <Link to="/admin-dashboard?tab=search-employee">
-                  <h1
-                    className={`cursor-pointer p-2 hover:bg-[#707070] rounded-md ${
-                      activeTab === "search-employee" ? "bg-[#707070]" : ""
-                    }`}
-                  >
-                    Search Employees
-                  </h1>
-                </Link>
+               
                 <Link to="/admin-dashboard?tab=addemployee">
                   <h1
                     className={`cursor-pointer p-2 hover:bg-[#707070] rounded-md mt-1 ${
@@ -151,27 +166,9 @@ export default function AdminDashSideBar() {
                   </h1>
                 </Link>
 
-              <Link to="/admin-dashboard?tab=add-foods">
-              <div
-                className={`p-2.5 my-2 mx-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-[#707070] text-white ${
-                  activeTab === "add-foods" ? "bg-[#707070]" : ""
-                }`}
-               >
-                <MdDashboard color="#D4D4D4" />
-                <span className="text-[15px] ml-4 text-[#D4D4D4]"> Add Foods</span>
-              </div>
-              </Link>
+           
             
-              <Link to="/admin-dashboard?tab=view-foods">
-              <div
-                className={`p-2.5 my-2 mx-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-[#707070] text-white ${
-                  activeTab === "view-foods" ? "bg-[#707070]" : ""
-                }`}
-               >
-                <MdDashboard color="#D4D4D4" />
-                <span className="text-[15px] ml-4 text-[#D4D4D4]"> View Foods</span>
-              </div>
-              </Link>
+             
 
 
               </div>

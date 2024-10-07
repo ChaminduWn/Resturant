@@ -8,6 +8,7 @@ export default function Item() {
   const [foodItems, setFoodItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState(""); // State for search term
+  const [error, setError] = useState(null); // State for handling errors
   const navigate = useNavigate();
 
   // Fetch all food items based on search
@@ -18,10 +19,22 @@ export default function Item() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      
+      if (!response.ok) {
+        throw new Error("Failed to fetch food items");
+      }
+
       const data = await response.json();
-      setFoodItems(data.foodItems);
+      if (data.foodItems) {
+        setFoodItems(data.foodItems);
+        setError(null);
+      } else {
+        setFoodItems([]); // Set empty if no items found
+        setError("No items found");
+      }
     } catch (error) {
-      console.error("Error fetching food items:", error);
+      setError(error.message);
+      setFoodItems([]); // Handle error by resetting the foodItems
     }
   };
 
@@ -112,14 +125,16 @@ export default function Item() {
       {/* Main content */}
       <div className="flex items-center justify-center">
         <div className="max-w-[1200px] mx-auto">
-          {foodItems.length === 0 ? (
+          {error ? (
+            <p className="text-red-600 dark:text-red-400">{error}</p>
+          ) : foodItems.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-400">No items available</p>
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {foodItems.map((item) => (
                 <div
                   key={item._id}
-                  className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-full h-[300px] overflow-hidden"
+                  className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-full h-[300px] overflow-hidden min-w-[300px] min-h-[300px]"
                 >
                   <div className="relative mx-2 mt-2 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-[150px]">
                     <img

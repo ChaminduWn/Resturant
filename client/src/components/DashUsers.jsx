@@ -78,11 +78,15 @@ export default function DashUsers() {
         setShowModal(false);
         setDeleteMessage('User deleted successfully');
       } else {
-        setDeleteMessage('Error deleting user');
+        setDeleteMessage('Error deleting user. Please try again.');
       }
     } catch (error) {
-      setDeleteMessage('Error deleting user');
+      setDeleteMessage(`Error: ${error.message}`);
       console.log(error.message);
+    } finally {
+      // Resetting the modal state after the operation
+      setUserIdToDelete('');
+      setShowModal(false);
     }
   };
 
@@ -196,12 +200,12 @@ export default function DashUsers() {
         <Modal.Header />
         <Modal.Body>
           <div className='text-center'>
-            <HiOutlineExclamationCircle className='mx-auto mb-4 text-gray-400 h-14 w-14 dark:text-gray-200' />
+            <HiOutlineExclamationCircle className='mx-auto mb-4 text-red-400 h-14 w-14 dark:text-gray-200' />
             <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
               Are you sure you want to delete this user?
             </h3>
             <div className='flex justify-center gap-4'>
-              <Button color='failure' onClick={handleDeleteUser}>
+              <Button color='red' onClick={handleDeleteUser}>
                 Yes, I'm sure
               </Button>
               <Button color='gray' onClick={() => setShowModal(false)}>
@@ -209,6 +213,7 @@ export default function DashUsers() {
               </Button>
             </div>
           </div>
+          {deleteMessage && <p className="mt-4 text-center text-red-500">{deleteMessage}</p>}
         </Modal.Body>
       </Modal>
     </div>

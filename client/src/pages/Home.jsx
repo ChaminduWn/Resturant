@@ -28,12 +28,12 @@ export default function Home() {
           </div>
           <div className="flex-row">
           <Link to="/signin">
-            <button className="text-[#d4d4d4] py-2 px-6 font-semibold uppercase rounded-full bg-[#A80000] hover:bg-[#4c0000]">
+            <button className="text-[#d4d4d4] py-2 px-6 font-semibold uppercase rounded-full bg-[#000000] hover:bg-[#e93b92]">
               Signin now
             </button>
             </Link>
             <Link to="/about">
-              <button className="text-[#d4d4d4] py-2 px-6 font-semibold uppercase rounded-full border-2 border-[#A80000] hover:border-[#4c0000] mx-6">
+              <button className="text-[#d4d4d4] py-2 px-6 font-semibold uppercase rounded-full border-2 border-[#000000] hover:border-[#e93b92] mx-6">
                 Learn More
               </button>
             </Link>

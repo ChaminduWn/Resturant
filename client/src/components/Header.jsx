@@ -4,7 +4,7 @@ import { Avatar, Button, Dropdown, DropdownDivider, TextInput } from "flowbite-r
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import logo from "../assets/cjgym.png";
+import logo from "../assets/resturant01.png";
 
 export default function Header() {
     const path = useLocation().pathname;

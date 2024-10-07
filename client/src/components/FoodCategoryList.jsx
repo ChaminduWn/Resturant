@@ -97,59 +97,62 @@ export default function FoodCategoryList() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+ 
   const updateFoodCategory = async () => {
-    const formDataToSend = new FormData();
-    formDataToSend.append("foodName", formData.foodName);
-    formDataToSend.append("description", formData.description);
-    formDataToSend.append("category", formData.category);
-    formDataToSend.append("price", formData.price);
+  const formDataToSend = new FormData();
+  formDataToSend.append("foodName", formData.foodName);
+  formDataToSend.append("description", formData.description);
+  formDataToSend.append("category", formData.category);
+  formDataToSend.append("price", formData.price);
 
-    // Only append the image if a new one is selected
-    if (selectedImage) {
-      formDataToSend.append("image", selectedImage);
-    }
+  // Check if a new image is selected, otherwise append the current image URL
+  if (selectedImage) {
+    formDataToSend.append("image", selectedImage);
+  } else {
+    formDataToSend.append("image", formData.image); // Append the existing image URL
+  }
 
-    try {
-      const response = await fetch(`/api/foods/updateFoods/${itemToEdit._id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: formDataToSend,
-      });
+  try {
+    const response = await fetch(`/api/foods/updateFoods/${itemToEdit._id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: formDataToSend,
+    });
 
-      if (response.ok) {
-        setCategoryToEdit(null); // Reset edit state
-        setShowEditDialog(false); // Hide the edit dialog (pop-up)
-        fetchFoodCategories(); // Refresh food items
+    if (response.ok) {
+      setCategoryToEdit(null); // Reset edit state
+      setShowEditDialog(false); // Hide the edit dialog (pop-up)
+      fetchFoodCategories(); // Refresh food items
 
-        Toastify({
-          text: "Food item updated successfully!",
-          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-          duration: 3000,
-          gravity: "top",
-          position: "right",
-        }).showToast();
-      } else {
-        Toastify({
-          text: "Failed to update food item!",
-          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-          duration: 3000,
-          gravity: "top",
-          position: "right",
-        }).showToast();
-      }
-    } catch (error) {
-      console.error("Error updating food item:", error);
       Toastify({
-        text: "Error updating food item!",
+        text: "Food item updated successfully!",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+      }).showToast();
+    } else {
+      Toastify({
+        text: "Failed to update food item!",
         backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
         duration: 3000,
         gravity: "top",
         position: "right",
       }).showToast();
     }
-  };
+  } catch (error) {
+    console.error("Error updating food item:", error);
+    Toastify({
+      text: "Error updating food item!",
+      backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+    }).showToast();
+  }
+};
 
   const handleImageChange = (e) => {
     setSelectedImage(e.target.files[0]); // Save the selected image file
@@ -316,6 +319,10 @@ export default function FoodCategoryList() {
                   onChange={handleImageChange}
                   className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-gray-300"
                 />
+                        {formData.image && !selectedImage && (
+          <img src={formData.image} alt="Current" className="w-32 mt-2" />
+        )}
+
               </div>
 
               <div className="flex justify-end mt-4">

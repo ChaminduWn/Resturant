@@ -35,7 +35,7 @@ const router = express.Router();
 router.post('/createFood', verifyToken, createFoodItem); // Admin only
 router.get('/getAllFoods', getFoodItem); // Public route
 router.get('/findById/:foodId', findFoodById); // Public route
-router.delete('/deleteFood/:itemId', verifyToken, deleteFoodItem); // Admin only
-router.put('/updateFood/:itemId', verifyToken, updateFoodItem); // Admin only
+router.delete('/deleteFoods/:id', verifyToken, deleteFoodItem); // Admin only
+router.put('/updateFoods/:id', verifyToken, updateFoodItem); // Admin only
 
 export default router;

@@ -7,12 +7,13 @@ import "toastify-js/src/toastify.css";
 export default function Item() {
   const [foodItems, setFoodItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
   const navigate = useNavigate();
 
-  // Fetch all food items
+  // Fetch all food items based on search
   const fetchFoodItems = async () => {
     try {
-      const response = await fetch("/api/foods/getAllFoods", {
+      const response = await fetch(`/api/foods/getAllFoods?search=${searchTerm}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -46,7 +47,6 @@ export default function Item() {
         image: item.image,
       });
     } else {
-      // Update quantity if item already exists
       currentCartList.forEach((cartItem) => {
         if (cartItem.id === item._id) {
           cartItem.quantity += 1;
@@ -55,7 +55,7 @@ export default function Item() {
     }
 
     localStorage.setItem(cartKey, JSON.stringify(currentCartList));
-    setCartCount(currentCartList.length); // Update cart count
+    setCartCount(currentCartList.length);
     showToast("Item added to cart!");
   };
 
@@ -71,8 +71,8 @@ export default function Item() {
       text: message,
       duration: 3000,
       close: true,
-      gravity: "top", // `top` or `bottom`
-      position: "right", // `left`, `center` or `right`
+      gravity: "top",
+      position: "right",
       backgroundColor: "linear-gradient(to right, #4caf50, #81c784)",
     }).showToast();
   };
@@ -80,17 +80,23 @@ export default function Item() {
   useEffect(() => {
     fetchFoodItems();
     updateCartCount();
-  }, []);
+  }, [searchTerm]); // Re-fetch food items on search term change
 
-  // Check if current user is authenticated
   const user = JSON.parse(localStorage.getItem("persist:root"))?.user;
   const currentUser = user ? JSON.parse(user).currentUser : null;
 
   return (
     <div className="min-h-screen">
-      {/* Top bar with "Add Your Item" and Cart */}
+      {/* Top bar with "Add Your Item", Cart and Search */}
       <div className="flex items-center justify-between p-4 bg-gray-100">
         <h1 className="text-2xl font-bold text-gray-700">Add Your Item</h1>
+        <input
+          type="text"
+          placeholder="Search Food..."
+          className="p-2 border rounded"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input
+        />
         <div className="relative flex items-center">
           <Link to={`/shoppingCart`}>
             <span className="text-3xl text-black">
@@ -109,11 +115,11 @@ export default function Item() {
           {foodItems.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-400">No items available</p>
           ) : (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {foodItems.map((item) => (
                 <div
                   key={item._id}
-                  className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-full h-[250px] overflow-hidden" // Overflow hidden to keep buttons inside the card
+                  className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-full h-[300px] overflow-hidden"
                 >
                   <div className="relative mx-2 mt-2 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-[150px]">
                     <img
@@ -128,7 +134,7 @@ export default function Item() {
                         {item.foodName}
                       </p>
                       <p className="block font-sans text-sm font-medium leading-relaxed text-blue-gray-900">
-                        LKR {item.price} {/* Change currency to LKR */}
+                        LKR {item.price}
                       </p>
                     </div>
                     <p className="block font-sans text-xs font-normal leading-normal text-gray-700 opacity-75">
@@ -136,16 +142,16 @@ export default function Item() {
                     </p>
                   </div>
                   {currentUser?._id && (
-                    <div className="absolute flex justify-between bottom-3 left-3 right-3"> {/* Changed to absolute for better positioning */}
+                    <div className="absolute flex justify-between bottom-3 left-3 right-3">
                       <button
                         onClick={() => addToCart(item)}
-                        className="px-4 py-2 font-semibold text-white bg-green-600 rounded hover:bg-green-500" // Updated button color
+                        className="px-4 py-2 font-semibold text-white bg-green-600 rounded hover:bg-green-500"
                       >
                         Add to Cart
                       </button>
                       <button
                         onClick={() => handleBuyNow(item)}
-                        className="px-4 py-2 font-semibold text-white bg-blue-600 rounded hover:bg-blue-500" // Updated button color
+                        className="px-4 py-2 font-semibold text-white bg-blue-600 rounded hover:bg-blue-500"
                       >
                         Buy Now
                       </button>

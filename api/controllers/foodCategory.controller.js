@@ -164,6 +164,7 @@ export const updateFoodItem = async (req, res, next) => {
   }
 };
 
+
 // export const updateFoodItem = async (req, res, next) => {
 //   try {
 //     if (!req.user.isAdmin) {

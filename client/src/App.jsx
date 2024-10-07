@@ -16,7 +16,6 @@ import AdminViewEmployeeDetails from "./components/AdminViewEmployeeDetails.jsx"
 import Shopping from "./components/ShoppingCart.jsx";
 import Footer from "./components/Footer.jsx";
 
-
 import CartPage from "./pages/CartPage.jsx";
 // import PaymentPage from './pages/PaymentPage.jsx'
 // import ShippingPage from './pages/ShippingPage..jsx'
@@ -50,7 +49,6 @@ export default function App() {
         <Route path="/Checkout/payment" element={<PayNow />} />
         {/* <Route path="/Checkout/payment" element={<PayNow />} /> */}
 
-
         {/* <Route path="/Checkout/payment/shipping" element={<ShippingPage />} />
 <Route
           path="/Checkout/payment/paymentSelect"
@@ -81,8 +79,7 @@ export default function App() {
         {/* <Route path="/updateFoods/:id" element
         ={<FoodCategoryUpdate />} /> */}
       </Routes>
-            <Footer />
-
+      <Footer />
     </BrowserRouter>
   );
 }

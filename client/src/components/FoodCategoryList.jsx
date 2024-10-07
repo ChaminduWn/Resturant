@@ -97,7 +97,6 @@ export default function FoodCategoryList() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
- 
   const updateFoodCategory = async () => {
   const formDataToSend = new FormData();
   formDataToSend.append("foodName", formData.foodName);
@@ -316,13 +315,9 @@ export default function FoodCategoryList() {
                   type="file"
                   id="image"
                   name="image"
-                  onChange={handleImageChange}
+                  // onChange={handleImageChange}
                   className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-gray-300"
                 />
-                        {formData.image && !selectedImage && (
-          <img src={formData.image} alt="Current" className="w-32 mt-2" />
-        )}
-
               </div>
 
               <div className="flex justify-end mt-4">
@@ -376,3 +371,4 @@ export default function FoodCategoryList() {
     </div>
   );
 }
+372

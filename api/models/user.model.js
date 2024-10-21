@@ -47,9 +47,8 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     }
-tkhorkgonbn
-bfbfjbf
-bcfbkjdfnb
+}, {timestamps: true});
+
 const User = mongoose.model('User',userSchema);
 
 export default User;

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 
+// Styles for the PDF document
 const styles = StyleSheet.create({
   page: {
     padding: 30,
@@ -44,49 +45,55 @@ const styles = StyleSheet.create({
   },
 });
 
-const ReceiptPDF = ({ paymentDetails, tokenNumber }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <Text style={styles.title}>Payment Successful!</Text>
-      <Text style={styles.text}>Your order has been confirmed with the following details:</Text>
+// PDF Document Component
+const ReceiptPDF = ({ paymentDetails, tokenNumber }) => {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>Payment Successful!</Text>
+        <Text style={styles.text}>Your order has been confirmed with the following details:</Text>
 
-      <View style={styles.section}>
-        <Text style={styles.heading}>Payment Info</Text>
-        <Text style={styles.text}>Card Type: {paymentDetails.paymentInfo.cardType}</Text>
-        <Text style={styles.text}>Card Name: {paymentDetails.paymentInfo.cardName}</Text>
-        <Text style={styles.text}>Card Number: **** **** **** {paymentDetails.paymentInfo.cardNumber.slice(-4)}</Text>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.heading}>Order Summary</Text>
-        <Text style={styles.text}>Total Price: LKR {paymentDetails.totalPrice.toFixed(2)}</Text>
-        <Text style={styles.heading}>Items:</Text>
-        <View style={styles.list}>
-          {paymentDetails.cartItems.map((item, index) => (
-            <Text key={index} style={styles.text}>
-              {item.foodName} x {item.quantity}
-            </Text>
-          ))}
+        <View style={styles.section}>
+          <Text style={styles.heading}>Payment Info</Text>
+          <Text style={styles.text}>Card Type: {paymentDetails.paymentInfo.cardType}</Text>
+          <Text style={styles.text}>Card Name: {paymentDetails.paymentInfo.cardName}</Text>
+          <Text style={styles.text}>
+            Card Number: **** **** **** {paymentDetails.paymentInfo.cardNumber.slice(-4)}
+          </Text>
         </View>
-      </View>
 
-      <Text style={styles.token}>Token Number: {tokenNumber}</Text>
-      <Text style={styles.footer}>Thank you for your order!</Text>
-    </Page>
-  </Document>
-);
+        <View style={styles.section}>
+          <Text style={styles.heading}>Order Summary</Text>
+          <Text style={styles.text}>Total Price: LKR {paymentDetails.totalPrice.toFixed(2)}</Text>
+          <Text style={styles.heading}>Items:</Text>
+          <View style={styles.list}>
+            {paymentDetails.cartItems.map((item, index) => (
+              <Text key={index} style={styles.text}>
+                {item.foodName} x {item.quantity}
+              </Text>
+            ))}
+          </View>
+        </View>
 
+        <Text style={styles.token}>Token Number: {tokenNumber}</Text>
+        <Text style={styles.footer}>Thank you for your order!</Text>
+      </Page>
+    </Document>
+  );
+};
+
+// Main Receipt Component
 const PaymentReceipt = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { paymentDetails, tokenNumber } = location.state || {}; // Safe access to location.state
+  // Get payment details and token number from state
+  const { paymentDetails, tokenNumber } = location.state || {};
 
-  // If paymentDetails or tokenNumber is missing, redirect to an error or another page
+  // Redirect if details are missing
   if (!paymentDetails || !tokenNumber) {
-    // Redirect user to the home or cart page with an error message
     navigate("/cart", { replace: true });
-    return null; // Prevent further rendering
+    return null;
   }
 
   return (

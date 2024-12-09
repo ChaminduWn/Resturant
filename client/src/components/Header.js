@@ -53,9 +53,6 @@ export default function Header() {
                 <Link to="/">
                     <img src={logo} alt="logo" className="w-40" />
                 </Link>
-                
-
-                
 
                 <ul className="flex items-center gap-10"> {/* Aligning items in the center */}
                     <Link to="/">

@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useSelector, useDispatch } from "react-redux";
+import { updateCart, removeItemFromCart } from "../redux/actions"; // Replace with your actual Redux actions
 
 const ShoppingCart = () => {
-  const [cartItems, setCartItems] = useState([]);
+  const { cartItems, userId } = useSelector((state) => ({
+    cartItems: state.cart.items,
+    userId: state.user.currentUser?._id,
+  }));
+  const dispatch = useDispatch();
   const [totalPrice, setTotalPrice] = useState(0);
 
-  // Get user ID from local storage
-  const userId = localStorage.getItem("userId");
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
-    // Retrieve cart items from local storage
-    const currentCartList = JSON.parse(localStorage.getItem(`cart_${userId}`) || "[]") || [];
-    if (currentCartList.length > 0) {
-      setCartItems(currentCartList);
-      calculateTotal(currentCartList);
+    if (cartItems.length > 0) {
+      calculateTotal(cartItems);
     }
-  }, [userId]);
+  }, [cartItems]);
 
   const calculateTotal = (items) => {
     // Calculate total price of items in the cart
@@ -30,22 +31,12 @@ const ShoppingCart = () => {
       item.id === id ? { ...item, quantity: item.quantity + delta } : item
     );
     const filteredCart = updatedCart.filter((item) => item.quantity > 0);
-    setCartItems(filteredCart);
-    calculateTotal(filteredCart);
-    updateLocalStorage(filteredCart);
-  };
-
-  const updateLocalStorage = (updatedCart) => {
-    // Update the cart in local storage
-    localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
+    dispatch(updateCart(filteredCart)); // Dispatch updated cart to Redux store
   };
 
   const removeItem = (id) => {
     // Remove an item from the cart
-    const updatedCart = cartItems.filter((item) => item.id !== id);
-    setCartItems(updatedCart);
-    calculateTotal(updatedCart);
-    updateLocalStorage(updatedCart);
+    dispatch(removeItemFromCart(id)); // Dispatch item removal to Redux store
   };
 
   const handleOrderNow = () => {

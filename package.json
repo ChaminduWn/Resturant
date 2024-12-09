@@ -12,6 +12,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/ios": "^6.2.0",
     "@reduxjs/toolkit": "^2.2.7",
     "autoprefixer": "^10.4.20",
     "bcryptjs": "^2.4.3",
@@ -30,5 +33,8 @@
     "react-circular-progressbar": "^2.1.0",
     "redux-persist": "^6.0.0",
     "toastify-js": "^1.12.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0"
   }
 }

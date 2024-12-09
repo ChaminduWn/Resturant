@@ -7,12 +7,7 @@ import SignIn from "./pages/SignIn.jsx";
 import Header from "./components/Header.jsx";
 import Item from "./pages/Item.jsx";
 import Dashboard from "./pages/DashBoard.jsx";
-import MemberView from "./pages/MemberView.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
-import EmployeeLogin from "./pages/EmployeeLogin.jsx";
-import AdminDashboard from "./pages/AdminDashborad.jsx";
-import AdminPrivateRoute from "./components/AdminPrivateRoutes.jsx";
-import AdminViewEmployeeDetails from "./components/AdminViewEmployeeDetails.jsx";
 import Shopping from "./components/ShoppingCart.jsx";
 import Footer from "./components/Footer.jsx";
 
@@ -23,7 +18,6 @@ import CartPage from "./pages/CartPage.jsx";
 // import PaymentSuccess from './pages/PaymentSuccess.jsx'
 import PayNow from "./components/PayNow.jsx";
 import PaymentReceipt from "./pages/PaymentReceipt.jsx";
-import PaymentManager from "./components/PaymentManager.jsx";
 
 export default function App() {
   return (
@@ -36,7 +30,6 @@ export default function App() {
 
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/employee-login" element={<EmployeeLogin />} />
 
         <Route path="/item" element={<Item />} />
         {/* <Route path="/shoppingCart" element={<ShoppingCart />} /> */}
@@ -62,18 +55,12 @@ export default function App() {
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/member-view/:userId" element={<MemberView />} />
         </Route>
 
         <Route element={<AdminPrivateRoute />}>
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
-          <Route
-            path="/view-employee-details/:empId"
-            element={<AdminViewEmployeeDetails />}
-          />
+         
 
-          <Route path="/member-view/:userId" element={<MemberView />} />
         </Route>
 
         {/* <Route path="/updateFoods/:id" element

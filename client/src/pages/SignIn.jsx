@@ -2,7 +2,6 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import OAuth from '../components/OAuth.jsx';
 import gymImage from '../assets/emplogin.jpg';
 import {
   signInStart,
@@ -98,7 +97,6 @@ export default function SignIn() {
                 'Sign In'
               )}
             </button>
-            <OAuth />
           </form>
           <div className='flex gap-2 mt-5 text-sm'>
             <span>Don't have an account?</span>

@@ -2,6 +2,28 @@ WN Restaurants
 
 WN Restaurants is a restaurant management system built using the MERN (MongoDB, Express.js, React.js, Node.js) stack and styled with Tailwind CSS. This application provides a seamless experience for customers and management alike.
 
+Table of Contents
+
+Features
+
+Customer Features
+
+Admin Features
+
+Manager Features
+
+Technology Stack
+
+Project Structure
+
+Backend
+
+Frontend
+
+Usage
+
+License
+
 Features
 
 Customer Features
@@ -71,3 +93,4 @@ License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 Thank you for choosing WN Restaurants! Happy managing!
+

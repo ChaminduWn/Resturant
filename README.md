@@ -27,6 +27,7 @@ frontend/
   |-- .env  
 <h3>Usage:</h3> <p>Clone the repository, set up the backend and frontend, and run the application to use all features. Refer to the documentation for environment variables and installation steps.</p>
 <h3>ScreenShots:</h3> 
+
 ![Screenshot 2024-12-20 224253](https://github.com/user-attachments/assets/4857421c-a541-4032-a2d0-6346f4bb36b0)
 
 >  <br> 

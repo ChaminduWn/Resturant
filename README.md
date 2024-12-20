@@ -1,37 +1,12 @@
-WN Restaurants
+<center><h1>WN Restaurants</h1></center>
 
-WN Restaurants is a restaurant management system built using the MERN (MongoDB, Express.js, React.js, Node.js) stack and styled with Tailwind CSS. This application provides a seamless experience for customers and management alike.
+![Wn Resturants logo](https://github.com/user-attachments/assets/e0b306b3-0899-45c6-b78f-6390f6015ba4)
 
-Table of Contents
-Features
-Customer Features
-Admin Features
-Manager Features
-Technology Stack
-Project Structure
-Backend
-Frontend
-Usage
-License
-Features
-Customer Features
-Browse Menu: Everyone can view the available food items and search for specific items.
-Ordering: Only registered users can order food items.
-Payment: Customers can make payments online. Upon successful payment, a unique token number is generated.
-Token Pickup: Customers can also pay outside the app and use the token number to collect their order easily.
-Admin Features
-Admin Management: A single admin can:
-Add and manage managers.
-View and control registered users and their details.
-Manager Features
-User Management: Managers can view and control registered users' details.
-Menu Management: Managers can add, modify, or remove menu items.
-Payment Details: Managers can view payment details.
-Technology Stack
-Frontend: React.js, Tailwind CSS
-Backend: Node.js, Express.js
-Database: MongoDB
-Project Structure
+
+<br> <p>**WN Restaurants** is a restaurant management system built using the **MERN (MongoDB, Express.js, React.js, Node.js)** stack and styled with **Tailwind CSS**. This application provides a seamless experience for customers and management alike, supporting menu browsing, ordering, payments, and user management functionalities.</p>
+<h3>Features:</h3> <ul> <li>Browse Menu: View available food items and search for specific items.</li> <li>Ordering: Only registered users can order food items.</li> <li>Payment: Customers can make payments online and receive a unique token number.</li> <li>Token Pickup: Customers can also pay outside the app and use the token number for easy order collection.</li> </ul> <h4>Admin Features:</h4> <ul> <li>Add and manage managers.</li> <li>View and control registered users and their details.</li> </ul> <h4>Manager Features:</h4> <ul> <li>View and manage registered users' details.</li> <li>Add, modify, or remove menu items.</li> <li>View payment details.</li> </ul>
+<h3>Technologies:</h3> <ul> <li>Frontend: React.js, Tailwind CSS</li> <li>Backend: Node.js, Express.js</li> <li>Database: MongoDB</li> </ul>
+<h3>Project Structure:</h3>
 Backend
 lua
 Copy code
@@ -50,23 +25,7 @@ frontend/
       |-- components/  
       |-- pages/  
   |-- .env  
-Usage
-Screenshots
-Home Page
-
-Login Page
-
-How It Works
-For Customers:
-
-Explore the menu, register, and place orders.
-For Admin:
-
-Manage managers and oversee user activities.
-For Managers:
-
-Handle menu items and view payment details.
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-Thank you for choosing WN Restaurants! Happy managing!
+<h3>Usage:</h3> <p>Clone the repository, set up the backend and frontend, and run the application to use all features. Refer to the documentation for environment variables and installation steps.</p>
+<h3>ScreenShots:</h3> <center> <img src="assets/home.png" alt="Home Page Screenshot"> <br> <img src="assets/login.png" alt="Login Page Screenshot"> </center>
+<h3>License:</h3> <p>This project is licensed under the <strong>MIT License</strong>. See the <code>LICENSE</code> file for details.</p>
+Save this content as your README.md, and place the images (logo.png, home.png, login.png) in the assets/ folder of your repository. Let me know if you'd like further modifications! 🚀

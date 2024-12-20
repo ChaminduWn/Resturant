@@ -26,8 +26,13 @@ frontend/
       |-- pages/  
   |-- .env  
 <h3>Usage:</h3> <p>Clone the repository, set up the backend and frontend, and run the application to use all features. Refer to the documentation for environment variables and installation steps.</p>
-<h3>ScreenShots:</h3> <center![Screenshot 2024-12-20 224253](https://github.com/user-attachments/assets/1aa5e5ed-4a18-4f93-a622-5ff384f4ea77)
->  <br> ![Screenshot 2024-12-20 224441](https://github.com/user-attachments/assets/a7af3db8-90fe-4375-b5df-30070bcd1aa8)
+<h3>ScreenShots:</h3> 
+![Screenshot 2024-12-20 224253](https://github.com/user-attachments/assets/4857421c-a541-4032-a2d0-6346f4bb36b0)
+
+>  <br> 
+
+![Screenshot 2024-12-20 224441](https://github.com/user-attachments/assets/1289fbed-ceed-49d0-a5f3-fc63e79c22e7)
+
  </center>
 <h3>License:</h3> <p>This project is licensed under the <strong>MIT License</strong>. See the <code>LICENSE</code> file for details.</p>
 Save this content as your README.md, and place the images (logo.png, home.png, login.png) in the assets/ folder of your repository. Let me know if you'd like further modifications! 🚀

@@ -36,4 +36,3 @@ frontend/
 
  </center>
 <h3>License:</h3> <p>This project is licensed under the <strong>MIT License</strong>. See the <code>LICENSE</code> file for details.</p>
-Save this content as your README.md, and place the images (logo.png, home.png, login.png) in the assets/ folder of your repository. Let me know if you'd like further modifications! 🚀

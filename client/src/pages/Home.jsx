@@ -1,6 +1,4 @@
-import aboutCover from "../assets/aboutCover.png";
-import workoutCover from "../assets/workoutCover.png";
-import membershipCover from "../assets/membershipCover.png";
+
 import { Link } from "react-router-dom";
 import { useEffect } from 'react';
 

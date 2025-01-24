@@ -34,5 +34,11 @@ frontend/
 
 ![Screenshot 2024-12-20 224441](https://github.com/user-attachments/assets/1289fbed-ceed-49d0-a5f3-fc63e79c22e7)
 
+
+
+https://github.com/user-attachments/assets/6f0e6244-15fc-4bc8-b58d-49248d2b5cdd
+
+
+
  </center>
 <h3>License:</h3> <p>This project is licensed under the <strong>MIT License</strong>. See the <code>LICENSE</code> file for details.</p>

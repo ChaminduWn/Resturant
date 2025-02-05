@@ -24,13 +24,23 @@ export default function Header() {
 
     const handleSignout = async () => {
         try {
+            // Get userId before clearing
+            const userId = localStorage.getItem('userId');
+    
             const res = await fetch('/api/user/signout', {
                 method: 'POST',
             });
             const data = await res.json();
+            
             if (!res.ok) {
                 console.log(data.message);
             } else {
+                // Clear cart data before clearing user data
+                if (userId) {
+                    localStorage.removeItem(`cart_${userId}`);
+                }
+                
+                // Dispatch signout action and navigate
                 dispatch(signoutSuccess());
                 navigate(`/`);
             }
@@ -68,11 +78,13 @@ export default function Header() {
                             About
                         </li>
                     </Link>
-                    <Link to="/item">
-                        <li className="hidden sm:inline text-[#D4D4D4] hover:underline hover:underline-offset-4 hover:text-white">
-                            Item
-                        </li>
-                    </Link>
+                    {!(currentUser?.role === "Manager" || currentUser?.isAdmin) && (
+        <Link to="/item">
+            <li className="hidden sm:inline text-[#D4D4D4] hover:underline hover:underline-offset-4 hover:text-white">
+                Item
+            </li>
+        </Link>
+    )}
                 </ul>
 
                 <div className='flex gap-4'> {/* Sign-in dropdown or button */}

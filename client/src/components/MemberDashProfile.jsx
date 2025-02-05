@@ -129,20 +129,26 @@ export default function DashProfile() {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch('/api/user/signout', {
-        method: 'POST',
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
-        dispatch(signoutSuccess());
-        navigate('/');
-      }
+        // Get userId before clearing
+        const userId = localStorage.getItem('userId');
+
+        const res = await fetch('/api/user/signout', {
+            method: 'POST',
+        });
+        const data = await res.json();
+        
+        if (!res.ok) {
+            console.log(data.message);
+        } else {
+           
+             // Dispatch signout action and navigate
+            dispatch(signoutSuccess());
+            navigate(`/`);
+        }
     } catch (error) {
-      console.log(error.message);
+        console.log(error.message);
     }
-  };
+};
 
   const formattedDate = currentUser.dateOfBirth ? currentUser.dateOfBirth.split('T')[0] : '';
 

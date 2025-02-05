@@ -22,6 +22,10 @@ const paymentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  isChecked: {
+    type: Boolean,
+    default: false, // Payments are incomplete by default
+  },
 }, { timestamps: true });
 
 const Payment = mongoose.model("Payment", paymentSchema);

@@ -1,4 +1,3 @@
-// payment controller
 import Payment from "../models/Payment.model.js";
 import { errorHandler } from "../utils/error.js";
 
@@ -49,5 +48,73 @@ export const getPaymentByTokenNumber = async (req, res, next) => {
   } catch (error) {
     console.error(error);
     next(errorHandler(500, { message: "Failed to retrieve payment details" }));
+  }
+};
+
+export const updatePayment = async (req, res, next) => {
+  const { paymentId } = req.params;
+  const { isChecked } = req.body;
+
+  try {
+    // Check if `isChecked` is provided
+    if (typeof isChecked === 'undefined') {
+      return next(errorHandler(400, { message: "isChecked field is required" }));
+    }
+
+    // Find the payment record by ID
+    const payment = await Payment.findById(paymentId);
+    
+    // Handle payment not found scenario
+    if (!payment) {
+      return next(errorHandler(404, { message: "Payment not found" }));
+    }
+
+    // Update the payment status
+    payment.isChecked = isChecked;
+
+    // Save the updated payment
+    const updatedPayment = await payment.save();
+
+    // Return successful response with updated payment data
+    res.status(200).json({ 
+      message: "Payment status updated successfully", 
+      payment: updatedPayment 
+    });
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error updating payment:", error);
+    
+    // Forward the error to the error handler middleware
+    next(errorHandler(500, { message: "Failed to update payment" }));
+  }
+};
+
+// Delete payments older than a specified number of days
+export const deleteOldPayments = async (req, res, next) => {
+  const { days } = req.body; // Number of days from the current date
+
+  if (typeof days !== 'number' || days < 0) {
+    return next(errorHandler(400, { message: "Invalid number of days provided" }));
+  }
+
+  try {
+    // Get the current date in SLST timezone
+    const currentDate = new Date();
+    const slstOffset = 5.5 * 60 * 60 * 1000; // Sri Lanka Standard Time is UTC+5:30
+    const slstDate = new Date(currentDate.getTime() + slstOffset);
+
+    // Calculate the cutoff date
+    const cutoffDate = new Date(slstDate.getTime() - days * 24 * 60 * 60 * 1000);
+
+    // Delete payments older than the cutoff date
+    const result = await Payment.deleteMany({ createdAt: { $lt: cutoffDate } });
+
+    res.status(200).json({
+      message: `${result.deletedCount} payment(s) deleted successfully.`,
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    console.error("Error deleting old payments:", error);
+    next(errorHandler(500, { message: "Failed to delete old payments" }));
   }
 };

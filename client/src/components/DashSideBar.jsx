@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { signoutSuccess } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiArrowSmRight, HiOutlineUserGroup } from 'react-icons/hi';
@@ -7,6 +7,8 @@ import { Sidebar } from 'flowbite-react';
 
 export default function DashSideBar() {
   const location = useLocation();
+    const navigate = useNavigate();
+  
   const dispatch = useDispatch();
   const [tab, setTab] = useState('');
   const { currentUser } = useSelector(state => state.user);
@@ -20,19 +22,26 @@ export default function DashSideBar() {
   }, [location.search]);
 
   const handleSignout = async () => {
-    try {
-      const res = await fetch('/api/user/signout', {
-        method: 'POST',
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
-        dispatch(signoutSuccess());
+      try {
+          // Get userId before clearing
+          const userId = localStorage.getItem('userId');
+  
+          const res = await fetch('/api/user/signout', {
+              method: 'POST',
+          });
+          const data = await res.json();
+          
+          if (!res.ok) {
+              console.log(data.message);
+          } else {
+             
+               // Dispatch signout action and navigate
+              dispatch(signoutSuccess());
+              navigate(`/`);
+          }
+      } catch (error) {
+          console.log(error.message);
       }
-    } catch (error) {
-      console.log(error.message);
-    }
   };
 
   const sidebarStyle = {

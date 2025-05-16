@@ -1,6 +1,6 @@
-<center><h1>WN Restaurants</h1></center>
+<h1><center>🌟 WN Resturants - Restaurant Management System 🌟</center></h1>
+<br>
 
-![Wn Resturants logo](https://github.com/user-attachments/assets/e0b306b3-0899-45c6-b78f-6390f6015ba4)
 
 
 <br> <p>**WN Restaurants** is a restaurant management system built using the **MERN (MongoDB, Express.js, React.js, Node.js)** stack and styled with **Tailwind CSS**. This application provides a seamless experience for customers and management alike, supporting menu browsing, ordering, payments, and user management functionalities.</p>
